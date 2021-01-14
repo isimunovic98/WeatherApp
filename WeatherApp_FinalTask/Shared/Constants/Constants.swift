@@ -8,6 +8,12 @@
 import Foundation
 
 struct Constants {
+    
+    enum ConditionImages: String {
+        case humidityIcon = "humidity_icon"
+        case pressureIcon = "pressure_icon"
+        case windIcon = "wind_icon"
+    }
     let openWeatherAPIKey = "097d4b8d86a043c86ff8cc12d61b85d3"
     
     static func currentWeather(in city: String) -> String {
