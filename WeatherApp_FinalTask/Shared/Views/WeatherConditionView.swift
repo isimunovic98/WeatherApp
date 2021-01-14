@@ -1,46 +1,34 @@
 //
-//  TemperatureView.swift
+//  WeatherConditionsView.swift
 //  WeatherApp_FinalTask
 //
-//  Created by Ivan Simunovic on 12.01.2021..
+//  Created by Ivan Simunovic on 14.01.2021..
 //
 
 import UIKit
 import SnapKit
 
-enum TemperatureUnit: String {
-    case metric = "°C"
-    case imperial = "°F"
-}
-
-class TemperatureView: UIView {
+class WeatherConditionView: UIView {
 
     //MARK: Properties
-    let temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "15"
-        label.textAlignment = .right
-        label.numberOfLines = 1
-        label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.adjustsFontForContentSizeCategory = true
-        return label
+    
+    let conditionImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
-    let temperatureUnitLabel: UILabel = {
+    let conditionValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = TemperatureUnit.metric.rawValue
-        label.textAlignment = .left
-        label.numberOfLines = 1
         return label
     }()
-    
+
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 5
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.distribution = .fillEqually
         return stackView
     }()
@@ -57,11 +45,11 @@ class TemperatureView: UIView {
 }
 
 // - MARK: UI Setup
-private extension TemperatureView {
+private extension WeatherConditionView {
     func setupView() {
         addSubview(stackView)
-        stackView.addArrangedSubview(temperatureLabel)
-        stackView.addArrangedSubview(temperatureUnitLabel)
+        stackView.addArrangedSubview(conditionImage)
+        stackView.addArrangedSubview(conditionValueLabel)
         setupLayout()
 
     }
@@ -74,6 +62,6 @@ private extension TemperatureView {
 }
 
 //MARK: - Configuration
-extension TemperatureView {
+extension WeatherConditionView {
 
 }

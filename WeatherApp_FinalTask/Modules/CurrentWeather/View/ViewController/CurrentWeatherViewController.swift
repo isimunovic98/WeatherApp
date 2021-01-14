@@ -41,7 +41,7 @@ private extension CurrentWeatherViewController {
     }
     
     func setupAppearance() {
-        view.backgroundColor = .white
+        view.backgroundColor = .gray
     }
     
     func setupLayout() {

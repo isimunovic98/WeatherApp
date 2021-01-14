@@ -53,6 +53,12 @@ class CurrentWeatherView: UIView {
         return view
     }()
     
+    let conditionsStackView: WeatherConditionsStackView = {
+        let view = WeatherConditionsStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -66,7 +72,7 @@ class CurrentWeatherView: UIView {
 //MARK: - UI Setup
 private extension CurrentWeatherView {
     func setupView() {
-        let views = [currentTemperatureView, weatherDescriptionLabel, cityNameLabel, dividorLineView, dailyLowTemperature, dailyHighTemperature]
+        let views = [currentTemperatureView, weatherDescriptionLabel, cityNameLabel, dividorLineView, dailyLowTemperature, dailyHighTemperature, conditionsStackView]
         addSubviews(views)
         setupLayout()
     }
@@ -107,6 +113,12 @@ private extension CurrentWeatherView {
             make.size.equalTo(80)
             make.centerY.equalTo(dividorLineView)
             make.leading.equalTo(dividorLineView.snp.trailing)
+        }
+        
+        conditionsStackView.snp.makeConstraints { (make) in
+            make.top.equalTo(dividorLineView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self).inset(20)
+            make.height.equalTo(150)
         }
     }
 }
