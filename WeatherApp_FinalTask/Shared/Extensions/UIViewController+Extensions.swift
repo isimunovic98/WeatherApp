@@ -15,4 +15,10 @@ extension UIViewController {
     func removeBlurView() {
         BlurViewManager.removeBlurView()
     }
+    
+    func presentAlert(with message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        self.present(alert, animated: false, completion: nil)
+    }
 }

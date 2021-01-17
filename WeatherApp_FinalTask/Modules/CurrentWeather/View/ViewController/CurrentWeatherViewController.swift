@@ -114,7 +114,7 @@ extension CurrentWeatherViewController {
         let dataLoader = viewModel.initializeScreenData(for: viewModel.loadData)
         dataLoader.store(in: &disposeBag)
         
-        viewModel.screenDataReady
+        viewModel.screenDataReadyPublisher
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] _ in
@@ -128,6 +128,15 @@ extension CurrentWeatherViewController {
             .sink(receiveValue: { [weak self] shouldShowBlurView in
                 self?.showBlurView(shouldShowBlurView)
             })
+            .store(in: &disposeBag)
+        
+        viewModel.errorPublisher
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: RunLoop.main)
+            .sink{ [weak self] errorMessage in
+                guard let message = errorMessage else { return }
+                self?.presentAlert(with: message)
+            }
             .store(in: &disposeBag)
     }
 }
