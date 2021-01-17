@@ -21,6 +21,7 @@ class WeatherConditionView: UIView {
     let conditionValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         return label
     }()
 

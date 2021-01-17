@@ -17,8 +17,8 @@ struct WeatherInformation {
     var humidity: String
     var windSpeed: String
     
-    init(cityName: String, weatherModel: CurrentWeather) {
-        self.cityName = cityName
+    init(weatherModel: CurrentWeather) {
+        self.cityName = Defaults.getSelectedCity()
         self.weatherDescription = weatherModel.description[0].description
         self.currentTemperature = String(weatherModel.temperature.currentTemperature)
         self.tempMin = String(weatherModel.temperature.tempMin)

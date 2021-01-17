@@ -20,7 +20,6 @@ class CurrentWeatherView: UIView {
     let weatherDescriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Weather description"
         label.font = label.font.withSize(25)
         return label
     }()
@@ -28,7 +27,6 @@ class CurrentWeatherView: UIView {
     let cityNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "VIENNA"
         label.font = label.font.withSize(20)
         return label
     }()
@@ -72,7 +70,14 @@ class CurrentWeatherView: UIView {
 //MARK: - UI Setup
 private extension CurrentWeatherView {
     func setupView() {
-        let views = [currentTemperatureView, weatherDescriptionLabel, cityNameLabel, dividorLineView, dailyLowTemperatureView, dailyHighTemperatureView, conditionsStackView]
+        let views = [currentTemperatureView,
+                     weatherDescriptionLabel,
+                     cityNameLabel,
+                     dividorLineView,
+                     dailyLowTemperatureView,
+                     dailyHighTemperatureView,
+                     conditionsStackView]
+        
         addSubviews(views)
         setupLayout()
     }
@@ -125,6 +130,7 @@ private extension CurrentWeatherView {
 
 extension CurrentWeatherView {
     public func configure(with weather: WeatherInformation) {
+        setupTemperatureUnits()
         currentTemperatureView.temperatureLabel.text = weather.currentTemperature
         weatherDescriptionLabel.text = weather.weatherDescription
         cityNameLabel.text = weather.cityName
@@ -133,5 +139,22 @@ extension CurrentWeatherView {
         conditionsStackView.humidityConditionView.conditionValueLabel.text = weather.humidity
         conditionsStackView.pressureConditionView.conditionValueLabel.text = weather.pressure
         conditionsStackView.windSpeedConditionView.conditionValueLabel.text = weather.windSpeed
+        
+        conditionsStackView.pressureConditionView.isHidden = true
+    }
+    
+    private func setupTemperatureUnits() {
+        let selectedUnits = Defaults.getSelectedUnits()
+        
+        switch selectedUnits {
+        case Units.imperial.rawValue:
+            currentTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
+            dailyLowTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
+            dailyHighTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
+        default:
+            currentTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
+            dailyLowTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
+            dailyHighTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
+        }
     }
 }

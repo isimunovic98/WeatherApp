@@ -9,13 +9,13 @@ import Foundation
 import Combine
 
 protocol WeatherInformationRepository {
-    func getCurrentWeatherInformation(in city: String) -> AnyPublisher<CurrentWeather, NetworkError>
+    func getCurrentWeatherInformation() -> AnyPublisher<CurrentWeather, NetworkError>
 }
 
 class CurrentWeatherRepositoryImpl: WeatherInformationRepository {
     
-    func getCurrentWeatherInformation(in city: String) -> AnyPublisher<CurrentWeather, NetworkError> {
+    func getCurrentWeatherInformation() -> AnyPublisher<CurrentWeather, NetworkError> {
         return RestManager
-            .requestObservable(url: Constants.currentWeather(in: city))
+            .requestObservable(url: Constants.currentWeather(in: Defaults.getSelectedCity(), units: Defaults.getSelectedUnits()))
     }
 }

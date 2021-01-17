@@ -16,15 +16,35 @@ class CurrentWeatherViewController: UIViewController {
     
     private var viewModel: CurrentWeatherViewModel
     
+    let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     let currentWeatherView: CurrentWeatherView = {
         let view = CurrentWeatherView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    let settingsButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        button.setImage(UIImage(named: "settings"), for: .normal)
+        return button
+    }()
+    
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.placeholder = "search"
+        searchBar.isTranslucent = true
+        searchBar.barTintColor = UIColor.clear
+        searchBar.backgroundColor = UIColor.clear
+        searchBar.backgroundImage = UIImage()
+        searchBar.searchTextField.backgroundColor = .gray
         return searchBar
     }()
     
@@ -47,28 +67,40 @@ class CurrentWeatherViewController: UIViewController {
 //MARK: - UI Setup
 private extension CurrentWeatherViewController {
     func setupView() {
+        view.addSubview(backgroundImageView)
+        view.addSubview(settingsButton)
         view.addSubview(currentWeatherView)
         view.addSubview(searchBar)
-        
+
         setupAppearance()
         setupLayout()
      }
 
      func setupAppearance() {
-         view.backgroundColor = .white
-         view.backgroundColor = .gray
+        backgroundImageView.image = UIImage(named: "body_image-clear-day.png")
      }
 
      func setupLayout() {
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.edges.equalTo(view)
+        }
+        
+        settingsButton.snp.makeConstraints { (make) in
+            make.size.equalTo(50)
+            make.leading.equalTo(view).inset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide)        }
+        
         searchBar.snp.makeConstraints { (make) in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalTo(view)
+            make.leading.equalTo(settingsButton.snp.trailing).inset(10)
+            make.trailing.equalTo(view).inset(10)
         }
         
         currentWeatherView.snp.makeConstraints { (make) in
             make.top.equalTo(searchBar.snp.bottom)
             make.leading.bottom.trailing.equalTo(view)
         }
+
     }
     
     func reloadView() {
