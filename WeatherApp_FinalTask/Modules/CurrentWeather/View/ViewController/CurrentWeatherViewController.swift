@@ -76,6 +76,7 @@ private extension CurrentWeatherViewController {
         currentWeatherView.configure(with: screenData)
     }
 }
+//MARK: - Bindings
 extension CurrentWeatherViewController {
     func setupBindings() {
         let dataLoader = viewModel.initializeScreenData(for: viewModel.loadData)
@@ -88,6 +89,24 @@ extension CurrentWeatherViewController {
                 self?.reloadView()
             })
             .store(in: &disposeBag)
+        
+        viewModel.shouldShowBlurView
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] shouldShowBlurView in
+                self?.showBlurView(shouldShowBlurView)
+            })
+            .store(in: &disposeBag)
+    }
+}
+
+private extension CurrentWeatherViewController {
+    private func showBlurView( _ shouldShowLoader: Bool) {
+        if shouldShowLoader {
+            showBlurView()
+        } else {
+            removeBlurView()
+        }
     }
 }
 extension CurrentWeatherViewController: UISearchBarDelegate {

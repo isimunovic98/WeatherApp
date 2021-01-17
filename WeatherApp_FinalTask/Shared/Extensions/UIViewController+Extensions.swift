@@ -8,11 +8,11 @@
 import UIKit
 
 extension UIViewController {
-    func showBlurLoader() {
+    func showBlurView() {
         BlurViewManager.addBlurView(to: self.view)
     }
     
-    func removeBlurLoader() {
+    func removeBlurView() {
         BlurViewManager.removeBlurView()
     }
 }

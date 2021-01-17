@@ -16,7 +16,7 @@ class CurrentWeatherViewModel {
     var screenData: WeatherInformation?
     
     let loadData = CurrentValueSubject<Bool, NetworkError>(true)
-    var loaderPublisher = PassthroughSubject<Bool, Never>()
+    var shouldShowBlurView = PassthroughSubject<Bool, Never>()
     let screenDataReady = PassthroughSubject<Void, Never>()
     
     public init(cityName: String, repository: WeatherInformationRepository) {
@@ -28,7 +28,7 @@ class CurrentWeatherViewModel {
 extension CurrentWeatherViewModel {
     func initializeScreenData(for subject: CurrentValueSubject<Bool, NetworkError>) -> AnyCancellable {
         return subject.flatMap {[unowned self] (value) -> AnyPublisher<CurrentWeather, NetworkError> in
-            self.loaderPublisher.send(value)
+            self.shouldShowBlurView.send(value)
             return self.currentWeatherRepository.getCurrentWeatherInformation(in: self.cityName)
         }
         .subscribe(on: DispatchQueue.global(qos: .background))
@@ -40,7 +40,8 @@ extension CurrentWeatherViewModel {
             
         }, receiveValue: {[unowned self] data in
             self.screenData = data
-            screenDataReady.send()
+            self.screenDataReady.send()
+            self.shouldShowBlurView.send(false)
         })
 
 
