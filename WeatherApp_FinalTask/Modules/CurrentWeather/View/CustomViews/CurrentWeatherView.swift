@@ -41,13 +41,13 @@ class CurrentWeatherView: UIView {
         return view
     }()
     
-    let dailyLowTemperature: TemperatureView =  {
+    let dailyLowTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let dailyHighTemperature: TemperatureView =  {
+    let dailyHighTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -72,7 +72,7 @@ class CurrentWeatherView: UIView {
 //MARK: - UI Setup
 private extension CurrentWeatherView {
     func setupView() {
-        let views = [currentTemperatureView, weatherDescriptionLabel, cityNameLabel, dividorLineView, dailyLowTemperature, dailyHighTemperature, conditionsStackView]
+        let views = [currentTemperatureView, weatherDescriptionLabel, cityNameLabel, dividorLineView, dailyLowTemperatureView, dailyHighTemperatureView, conditionsStackView]
         addSubviews(views)
         setupLayout()
     }
@@ -103,14 +103,14 @@ private extension CurrentWeatherView {
             make.centerX.equalTo(self)
         }
         
-        dailyLowTemperature.snp.makeConstraints { (make) in
-            make.size.equalTo(80)
+        dailyLowTemperatureView.snp.makeConstraints { (make) in
+            make.size.equalTo(130)
             make.centerY.equalTo(dividorLineView)
             make.trailing.equalTo(dividorLineView.snp.leading)
         }
         
-        dailyHighTemperature.snp.makeConstraints { (make) in
-            make.size.equalTo(80)
+        dailyHighTemperatureView.snp.makeConstraints { (make) in
+            make.size.equalTo(130)
             make.centerY.equalTo(dividorLineView)
             make.leading.equalTo(dividorLineView.snp.trailing)
         }
@@ -120,5 +120,18 @@ private extension CurrentWeatherView {
             make.leading.trailing.equalTo(self).inset(20)
             make.height.equalTo(150)
         }
+    }
+}
+
+extension CurrentWeatherView {
+    public func configure(with weather: WeatherInformation) {
+        currentTemperatureView.temperatureLabel.text = weather.currentTemperature
+        weatherDescriptionLabel.text = weather.weatherDescription
+        cityNameLabel.text = weather.cityName
+        dailyLowTemperatureView.temperatureLabel.text = weather.tempMin
+        dailyHighTemperatureView.temperatureLabel.text = weather.tempMax
+        conditionsStackView.humidityConditionView.conditionValueLabel.text = weather.humidity
+        conditionsStackView.pressureConditionView.conditionValueLabel.text = weather.pressure
+        conditionsStackView.windSpeedConditionView.conditionValueLabel.text = weather.windSpeed
     }
 }

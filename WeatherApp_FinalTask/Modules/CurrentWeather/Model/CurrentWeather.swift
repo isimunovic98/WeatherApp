@@ -16,8 +16,8 @@ struct Temperature: Codable {
     var currentTemperature: Float
     var tempMin: Float
     var tempMax: Float
-    var pressure: Float
-    var humidity: Float
+    var pressure: Int
+    var humidity: Int
     
     enum CodingKeys: String, CodingKey {
         case currentTemperature = "temp"
@@ -35,15 +35,11 @@ struct Wind: Codable {
 struct CurrentWeather: Codable {
     var description: [Description]
     var temperature: Temperature
-    var windSpeed: Wind
+    var wind: Wind
     
     enum CodingKeys: String, CodingKey {
         case description = "weather"
         case temperature = "main"
-        case windSpeed = "wind"
+        case wind = "wind"
     }
-}
-
-struct Test: Codable {
-    var id: Int
 }
