@@ -27,6 +27,7 @@
 		02EDEEF525B46EA0009D7702 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDEEF425B46EA0009D7702 /* BlurView.swift */; };
 		02EDEEF825B46EEA009D7702 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDEEF725B46EEA009D7702 /* UIViewController+Extensions.swift */; };
 		02EDEEFC25B46F3D009D7702 /* BlurViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDEEFB25B46F3D009D7702 /* BlurViewManager.swift */; };
+		02EDEF0125B492BE009D7702 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDEF0025B492BE009D7702 /* Defaults.swift */; };
 		879456A7B4AE92B55EB5E22B /* Pods_WeatherApp_FinalTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3811B27924D503BF3E76EE1F /* Pods_WeatherApp_FinalTask.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		02EDEEF425B46EA0009D7702 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		02EDEEF725B46EEA009D7702 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		02EDEEFB25B46F3D009D7702 /* BlurViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurViewManager.swift; sourceTree = "<group>"; };
+		02EDEF0025B492BE009D7702 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		3811B27924D503BF3E76EE1F /* Pods_WeatherApp_FinalTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp_FinalTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6DACCEDBE6363AA392617C2 /* Pods-WeatherApp_FinalTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp_FinalTask.release.xcconfig"; path = "Target Support Files/Pods-WeatherApp_FinalTask/Pods-WeatherApp_FinalTask.release.xcconfig"; sourceTree = "<group>"; };
 		E39AD710419C69A3992991FB /* Pods-WeatherApp_FinalTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp_FinalTask.debug.xcconfig"; path = "Target Support Files/Pods-WeatherApp_FinalTask/Pods-WeatherApp_FinalTask.debug.xcconfig"; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		02CC775525ADD25C0034053B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				02EDEEFF25B492B3009D7702 /* UserDefaults */,
 				02EDEEFA25B46F2E009D7702 /* Subclasses */,
 				02D13EA125B1C8E1004A5885 /* Networking */,
 				025AA35725B0CAE200E32DE0 /* Views */,
@@ -258,6 +261,14 @@
 				02EDEEFB25B46F3D009D7702 /* BlurViewManager.swift */,
 			);
 			path = Subclasses;
+			sourceTree = "<group>";
+		};
+		02EDEEFF25B492B3009D7702 /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				02EDEF0025B492BE009D7702 /* Defaults.swift */,
+			);
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 		224A2491693A35B8209661B6 /* Pods */ = {
@@ -400,6 +411,7 @@
 				02BEC64425ADAFE50034438E /* CurrentWeatherView.swift in Sources */,
 				02D13EA725B1CBD7004A5885 /* SerializationManager.swift in Sources */,
 				02CC777625AE2F470034053B /* Constants.swift in Sources */,
+				02EDEF0125B492BE009D7702 /* Defaults.swift in Sources */,
 				02D13EAD25B1EBA2004A5885 /* WeatherInformation.swift in Sources */,
 				02EDEEF525B46EA0009D7702 /* BlurView.swift in Sources */,
 				02D13EAA25B1CD7E004A5885 /* WeatherInformationRepository.swift in Sources */,
