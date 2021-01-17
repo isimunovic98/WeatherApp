@@ -46,6 +46,8 @@ class CurrentWeatherView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.temperatureLabel.font = .systemFont(ofSize: 40)
         view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
+        view.temperatureLabel.textAlignment = .right
+        view.temperatureUnitLabel.textAlignment = .right
         return view
     }()
     
@@ -54,6 +56,8 @@ class CurrentWeatherView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.temperatureLabel.font = .systemFont(ofSize: 40)
         view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
+        view.temperatureLabel.textAlignment = .left
+        view.temperatureUnitLabel.textAlignment = .left
         return view
     }()
     
