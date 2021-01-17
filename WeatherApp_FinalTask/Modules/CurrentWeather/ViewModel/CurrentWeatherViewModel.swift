@@ -13,9 +13,10 @@ class CurrentWeatherViewModel {
     
     var screenData: WeatherInformation?
     
-    let loadData = CurrentValueSubject<Bool, NetworkError>(true)
+    let loadData = CurrentValueSubject<Bool, Never>(true)
     var shouldShowBlurView = PassthroughSubject<Bool, Never>()
-    let screenDataReady = PassthroughSubject<Void, Never>()
+    var screenDataReadyPublisher = PassthroughSubject<Void, Never>()
+    var errorPublisher = PassthroughSubject<String?, Never>()
     
     public init(repository: WeatherInformationRepository) {
         self.currentWeatherRepository = repository
@@ -23,7 +24,7 @@ class CurrentWeatherViewModel {
 }
 
 extension CurrentWeatherViewModel {
-    func initializeScreenData(for subject: CurrentValueSubject<Bool, NetworkError>) -> AnyCancellable {
+    func initializeScreenData(for subject: CurrentValueSubject<Bool, Never>) -> AnyCancellable {
         return subject.flatMap {[unowned self] (value) -> AnyPublisher<CurrentWeather, NetworkError> in
             self.shouldShowBlurView.send(value)
             return self.currentWeatherRepository.getCurrentWeatherInformation()
@@ -33,11 +34,16 @@ extension CurrentWeatherViewModel {
         .map({ (weatherModel) -> WeatherInformation in
             return WeatherInformation(weatherModel: weatherModel)
         })
-        .sink(receiveCompletion: { _ in
-            
+        .sink(receiveCompletion: { [unowned self] completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let error):
+                self.errorPublisher.send(error.localizedDescription)
+            }
         }, receiveValue: {[unowned self] data in
             self.screenData = data
-            self.screenDataReady.send()
+            self.screenDataReadyPublisher.send()
             self.shouldShowBlurView.send(false)
         })
     }

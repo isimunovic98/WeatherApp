@@ -8,10 +8,6 @@
 import Foundation
 import Alamofire
 import Combine
-public enum NetworkError: Error {
-    case generalError
-    case parseFailed
-}
 
 public class RestManager {
     private static let manager: Alamofire.Session = {
