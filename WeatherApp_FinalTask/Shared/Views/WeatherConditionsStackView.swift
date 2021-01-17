@@ -37,7 +37,7 @@ class WeatherConditionsStackView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 5
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.alignment = .center
         return stackView
     }()
     

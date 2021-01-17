@@ -14,20 +14,22 @@ class CurrentWeatherView: UIView {
     let currentTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.temperatureLabel.font = .systemFont(ofSize: 80)
+        view.temperatureUnitLabel.font = .systemFont(ofSize: 80)
         return view
     }()
     
     let weatherDescriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = label.font.withSize(25)
+        label.font = label.font.withSize(15)
         return label
     }()
     
     let cityNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = label.font.withSize(20)
+        label.font = label.font.withSize(25)
         return label
     }()
     
@@ -42,12 +44,16 @@ class CurrentWeatherView: UIView {
     let dailyLowTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.temperatureLabel.font = .systemFont(ofSize: 40)
+        view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
         return view
     }()
     
     let dailyHighTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.temperatureLabel.font = .systemFont(ofSize: 40)
+        view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
         return view
     }()
     
@@ -109,13 +115,15 @@ private extension CurrentWeatherView {
         }
         
         dailyLowTemperatureView.snp.makeConstraints { (make) in
-            make.size.equalTo(130)
+            make.height.equalTo(130)
+            make.leading.equalTo(self).inset(15)
             make.centerY.equalTo(dividorLineView)
             make.trailing.equalTo(dividorLineView.snp.leading)
         }
         
         dailyHighTemperatureView.snp.makeConstraints { (make) in
-            make.size.equalTo(130)
+            make.height.equalTo(130)
+            make.trailing.equalTo(self).inset(15)
             make.centerY.equalTo(dividorLineView)
             make.leading.equalTo(dividorLineView.snp.trailing)
         }
@@ -131,16 +139,16 @@ private extension CurrentWeatherView {
 extension CurrentWeatherView {
     public func configure(with weather: WeatherInformation) {
         setupTemperatureUnits()
+        setupConditions()
         currentTemperatureView.temperatureLabel.text = weather.currentTemperature
         weatherDescriptionLabel.text = weather.weatherDescription
-        cityNameLabel.text = weather.cityName
+        cityNameLabel.text = weather.cityName.uppercased()
         dailyLowTemperatureView.temperatureLabel.text = weather.tempMin
         dailyHighTemperatureView.temperatureLabel.text = weather.tempMax
         conditionsStackView.humidityConditionView.conditionValueLabel.text = weather.humidity
         conditionsStackView.pressureConditionView.conditionValueLabel.text = weather.pressure
         conditionsStackView.windSpeedConditionView.conditionValueLabel.text = weather.windSpeed
         
-        conditionsStackView.pressureConditionView.isHidden = true
     }
     
     private func setupTemperatureUnits() {
@@ -156,5 +164,11 @@ extension CurrentWeatherView {
             dailyLowTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
             dailyHighTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
         }
+    }
+    
+    private func setupConditions() {
+        conditionsStackView.pressureConditionView.isHidden = Defaults.pressureIsHidden()
+        conditionsStackView.windSpeedConditionView.isHidden = Defaults.windSpeedIsHidden()
+        conditionsStackView.humidityConditionView.isHidden = Defaults.humidityIsHidden()
     }
 }

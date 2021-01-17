@@ -41,7 +41,7 @@ class TemperatureView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 5
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         return stackView
     }()
     

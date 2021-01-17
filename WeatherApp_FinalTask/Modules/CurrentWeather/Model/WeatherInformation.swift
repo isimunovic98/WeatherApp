@@ -20,9 +20,9 @@ struct WeatherInformation {
     init(weatherModel: CurrentWeather) {
         self.cityName = Defaults.getSelectedCity()
         self.weatherDescription = weatherModel.description[0].description
-        self.currentTemperature = String(weatherModel.temperature.currentTemperature)
-        self.tempMin = String(weatherModel.temperature.tempMin)
-        self.tempMax = String(weatherModel.temperature.tempMax)
+        self.currentTemperature = String(format: "%.1f", weatherModel.temperature.currentTemperature)
+        self.tempMin = String(format: "%.1f", weatherModel.temperature.tempMin)
+        self.tempMax = String(format: "%.1f", weatherModel.temperature.tempMax)
         self.pressure = String(weatherModel.temperature.pressure)
         self.humidity = String(weatherModel.temperature.humidity)
         self.windSpeed = String(weatherModel.wind.speed)

@@ -8,13 +8,16 @@
 import Foundation
 
 enum Units: String {
-    case metric = "metric"
-    case imperial = "imperial"
+    case metric
+    case imperial
 }
 
 enum DefaultsKey: String {
-    case selectedCity = "selectedCity"
-    case selectedUnits = "selectedUnits"
+    case selectedCity
+    case selectedUnits
+    case pressureIsShown
+    case windSpeedIsShown
+    case humidityIsShown
 }
 
 struct Defaults {
@@ -44,5 +47,18 @@ struct Defaults {
         userDefault.set(units, forKey: DefaultsKey.selectedUnits.rawValue)
     }
     
+    static func pressureIsHidden() -> Bool {
+        return !userDefault.bool(forKey: DefaultsKey.pressureIsShown.rawValue)
+    }
+    
+    static func windSpeedIsHidden() -> Bool {
+        return !userDefault.bool(forKey: DefaultsKey.windSpeedIsShown.rawValue)
+        
+    }
+    
+    static func humidityIsHidden() -> Bool {
+        return !userDefault.bool(forKey: DefaultsKey.humidityIsShown.rawValue)
+           
+    }
     
 }
