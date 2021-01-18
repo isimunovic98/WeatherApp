@@ -56,13 +56,17 @@ class CurrentWeatherViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadData.send(true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         setupView()
         setupBindings()
         setupButtonActions()
+        viewModel.loadData.send(true)
     }
 }
 //MARK: - UI Setup

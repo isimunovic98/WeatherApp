@@ -67,7 +67,6 @@ private extension UnitsSelectionView {
     func setupConstraints() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self)
-            make.height.equalTo(20)
         }
         
         metricSelectionButton.snp.makeConstraints { (make) in
@@ -93,4 +92,15 @@ private extension UnitsSelectionView {
     }
 }
 
-
+extension UnitsSelectionView {
+    func saveSelection() {
+        if metricSelectionButton.isSelected {
+            print("saving metric")
+            Defaults.saveUnits(Units.metric.rawValue)
+        } else {
+            print("saving imperial")
+            Defaults.saveUnits(Units.imperial.rawValue)
+            print(Defaults.getSelectedUnits())
+        }
+    }
+}

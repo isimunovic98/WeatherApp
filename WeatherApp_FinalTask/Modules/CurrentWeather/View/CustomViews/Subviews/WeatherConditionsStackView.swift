@@ -10,7 +10,6 @@ import UIKit
 class WeatherConditionsStackView: UIView {
 
     //MARK: Properties
-    
     let windSpeedConditionView: WeatherConditionView = {
         let view = WeatherConditionView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +34,7 @@ class WeatherConditionsStackView: UIView {
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 5
+        stackView.spacing = 15
         stackView.axis = .horizontal
         stackView.alignment = .center
         return stackView
@@ -68,9 +67,4 @@ private extension WeatherConditionsStackView {
             make.edges.equalTo(self).inset(10)
         }
     }
-}
-
-//MARK: - Configuration
-extension WeatherConditionsStackView {
-
 }

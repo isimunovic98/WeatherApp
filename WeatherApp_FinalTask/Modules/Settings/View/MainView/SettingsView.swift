@@ -20,6 +20,20 @@ class SettingsView: UIView {
         return view
     }()
     
+    let conditionsView: ConditionsView = {
+        let view = ConditionsView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let applyButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Apply", for: .normal)
+        button.backgroundColor = .darkGray
+        return button
+    }()
+    
     //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,9 +47,10 @@ class SettingsView: UIView {
 
 private extension SettingsView {
     func setupView() {
-        let views = [locationsView, unitsView]
+        let views = [locationsView, unitsView, conditionsView, applyButton]
         addSubviews(views)
         setupConstraints()
+        setupApplyButton()
     }
     
     func setupConstraints() {
@@ -47,9 +62,29 @@ private extension SettingsView {
         unitsView.snp.makeConstraints { (make) in
             make.top.equalTo(locationsView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(self)
-            make.height.equalTo(400)
+            make.height.equalTo(100)
         }
         
+        conditionsView.snp.makeConstraints { (make) in
+            make.top.equalTo(unitsView.snp.bottom)
+            make.leading.trailing.equalTo(self)
+        }
+        
+        applyButton.snp.makeConstraints { (make) in
+            make.top.equalTo(conditionsView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self).inset(100)
+            make.height.equalTo(40)
+        }
+    }
+    
+    func setupApplyButton() {
+        applyButton.addTarget(self, action: #selector(applyButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func applyButtonPressed() {
+        print("apply pressed")
+        unitsView.saveSelection()
+        conditionsView.saveSelection()
     }
 }
 

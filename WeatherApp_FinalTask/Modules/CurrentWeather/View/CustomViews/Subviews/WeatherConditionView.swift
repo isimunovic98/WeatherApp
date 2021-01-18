@@ -58,6 +58,8 @@ private extension WeatherConditionView {
     func setupLayout() {
         stackView.snp.makeConstraints { (make) in
             make.edges.equalTo(self).inset(10)
+            make.width.equalTo(75)
+            make.height.equalTo(100)
         }
     }
 }

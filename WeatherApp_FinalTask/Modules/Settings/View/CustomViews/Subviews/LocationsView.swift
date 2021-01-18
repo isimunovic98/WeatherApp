@@ -54,7 +54,7 @@ private extension LocationsView {
         }
         
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(sectionNameLabel.snp.bottom)
+            make.top.equalTo(sectionNameLabel.snp.bottom).offset(10)
             make.leading.bottom.trailing.equalTo(self)
         }
     }

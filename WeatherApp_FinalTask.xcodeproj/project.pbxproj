@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		021BB46925B5CF1800005BB3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021BB46825B5CF1800005BB3 /* SettingsView.swift */; };
 		023552AB25B5CA5A00284175 /* UnitsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */; };
+		023CC7E925B5DE0900658566 /* ConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7E825B5DE0900658566 /* ConditionsView.swift */; };
+		023CC7EC25B5F79300658566 /* ConditionSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7EB25B5F79300658566 /* ConditionSelectionView.swift */; };
 		025004FF25ACB4FF0010103D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025004FE25ACB4FF0010103D /* AppDelegate.swift */; };
 		0250050825ACB4FF0010103D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0250050725ACB4FF0010103D /* Assets.xcassets */; };
 		0250050B25ACB4FF0010103D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0250050925ACB4FF0010103D /* LaunchScreen.storyboard */; };
@@ -44,6 +46,8 @@
 /* Begin PBXFileReference section */
 		021BB46825B5CF1800005BB3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSelectionView.swift; sourceTree = "<group>"; };
+		023CC7E825B5DE0900658566 /* ConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionsView.swift; sourceTree = "<group>"; };
+		023CC7EB25B5F79300658566 /* ConditionSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionSelectionView.swift; sourceTree = "<group>"; };
 		025004FB25ACB4FF0010103D /* WeatherApp_FinalTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp_FinalTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025004FE25ACB4FF0010103D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0250050725ACB4FF0010103D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,6 +101,8 @@
 			children = (
 				023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */,
 				02EDEF2325B54100009D7702 /* LocationsView.swift */,
+				023CC7E825B5DE0900658566 /* ConditionsView.swift */,
+				023CC7EB25B5F79300658566 /* ConditionSelectionView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -534,9 +540,11 @@
 				02EDEF1F25B53F0F009D7702 /* CityTableViewCell.swift in Sources */,
 				02BEC64C25ADCEEA0034438E /* CurrentWeatherViewController.swift in Sources */,
 				025AA35F25B0D15200E32DE0 /* WeatherConditionsStackView.swift in Sources */,
+				023CC7EC25B5F79300658566 /* ConditionSelectionView.swift in Sources */,
 				02D13EA325B1C8F0004A5885 /* RestManager.swift in Sources */,
 				023552AB25B5CA5A00284175 /* UnitsSelectionView.swift in Sources */,
 				02CC775C25ADDE7E0034053B /* TemperatureView.swift in Sources */,
+				023CC7E925B5DE0900658566 /* ConditionsView.swift in Sources */,
 				02EDEF2A25B5430F009D7702 /* UITableViewCell+Extensions.swift in Sources */,
 				025AA36325B0D55B00E32DE0 /* CurrentWeatherViewModel.swift in Sources */,
 				02EDEF3325B545E3009D7702 /* SettingsViewModel.swift in Sources */,

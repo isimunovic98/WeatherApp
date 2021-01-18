@@ -46,8 +46,6 @@ class CurrentWeatherView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.temperatureLabel.font = .systemFont(ofSize: 40)
         view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
-        view.temperatureLabel.textAlignment = .right
-        view.temperatureUnitLabel.textAlignment = .right
         return view
     }()
     
@@ -56,8 +54,6 @@ class CurrentWeatherView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.temperatureLabel.font = .systemFont(ofSize: 40)
         view.temperatureUnitLabel.font = .systemFont(ofSize: 40)
-        view.temperatureLabel.textAlignment = .left
-        view.temperatureUnitLabel.textAlignment = .left
         return view
     }()
     
@@ -134,7 +130,7 @@ private extension CurrentWeatherView {
         
         conditionsStackView.snp.makeConstraints { (make) in
             make.top.equalTo(dividorLineView.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self).inset(20)
+            make.centerX.equalTo(self)
             make.height.equalTo(150)
         }
     }
