@@ -62,6 +62,7 @@ class CurrentWeatherViewController: UIViewController {
         searchBar.delegate = self
         setupView()
         setupBindings()
+        setupButtonActions()
     }
 }
 //MARK: - UI Setup
@@ -106,6 +107,16 @@ private extension CurrentWeatherViewController {
     func reloadView() {
         guard let screenData = viewModel.screenData else { return }
         currentWeatherView.configure(with: screenData)
+    }
+    
+    func setupButtonActions() {
+        settingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
+    }
+    
+    @objc func goToSettings() {
+        let viewModel = SettingsViewModel()
+        let settingsViewController = SettingsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(settingsViewController, animated: false)
     }
 }
 //MARK: - Bindings
