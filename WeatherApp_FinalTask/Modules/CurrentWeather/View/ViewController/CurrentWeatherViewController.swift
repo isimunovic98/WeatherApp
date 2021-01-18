@@ -12,6 +12,8 @@ import Combine
 class CurrentWeatherViewController: UIViewController {
     
     //MARK: Properties
+    weak var coordinator: CurrentWeatherCoordinator?
+    
     var disposeBag = Set<AnyCancellable>()
     
     private var viewModel: CurrentWeatherViewModel
@@ -56,6 +58,7 @@ class CurrentWeatherViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadData.send(true)
@@ -114,13 +117,11 @@ private extension CurrentWeatherViewController {
     }
     
     func setupButtonActions() {
-        settingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
     }
     
-    @objc func goToSettings() {
-        let viewModel = SettingsViewModel()
-        let settingsViewController = SettingsViewController(viewModel: viewModel)
-        navigationController?.pushViewController(settingsViewController, animated: false)
+    @objc func settingsButtonPressed() {
+        coordinator?.goToSettings()
     }
 }
 //MARK: - Bindings

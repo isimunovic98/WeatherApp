@@ -10,6 +10,8 @@ import SnapKit
 
 class SettingsViewController: UIViewController {
     //MARK: Properties
+    weak var coordinator: SettingsCoordinator?
+    
     var viewModel: SettingsViewModel
 
     let settingsView: SettingsView = {
@@ -32,6 +34,7 @@ class SettingsViewController: UIViewController {
         view.backgroundColor = .systemGray4
         navigationController?.navigationBar.isHidden = false
         setupView()
+        setupBindings()
         settingsView.configure(with: viewModel.selectedCities)
     }
 }
@@ -48,4 +51,11 @@ private extension SettingsViewController {
             make.leading.bottom.trailing.equalToSuperview().inset(10)
         }
     }
+    
+    func setupBindings() {
+        settingsView.locationsView.goToWeatherInformation = { [weak self] in
+            self?.coordinator?.goToWeatherInformation()
+        }
+    }
 }
+

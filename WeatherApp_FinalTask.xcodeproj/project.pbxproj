@@ -11,6 +11,10 @@
 		023552AB25B5CA5A00284175 /* UnitsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */; };
 		023CC7E925B5DE0900658566 /* ConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7E825B5DE0900658566 /* ConditionsView.swift */; };
 		023CC7EC25B5F79300658566 /* ConditionSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7EB25B5F79300658566 /* ConditionSelectionView.swift */; };
+		023CC7F025B60AE400658566 /* CurrentWeatherCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7EF25B60AE400658566 /* CurrentWeatherCoordinator.swift */; };
+		023CC7F425B60B4A00658566 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7F325B60B4A00658566 /* Coordinator.swift */; };
+		023CC7F825B633E500658566 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7F725B633E500658566 /* AppCoordinator.swift */; };
+		023CC7FC25B6366E00658566 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7FB25B6366E00658566 /* SettingsCoordinator.swift */; };
 		025004FF25ACB4FF0010103D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025004FE25ACB4FF0010103D /* AppDelegate.swift */; };
 		0250050825ACB4FF0010103D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0250050725ACB4FF0010103D /* Assets.xcassets */; };
 		0250050B25ACB4FF0010103D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0250050925ACB4FF0010103D /* LaunchScreen.storyboard */; };
@@ -48,6 +52,10 @@
 		023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSelectionView.swift; sourceTree = "<group>"; };
 		023CC7E825B5DE0900658566 /* ConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionsView.swift; sourceTree = "<group>"; };
 		023CC7EB25B5F79300658566 /* ConditionSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionSelectionView.swift; sourceTree = "<group>"; };
+		023CC7EF25B60AE400658566 /* CurrentWeatherCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCoordinator.swift; sourceTree = "<group>"; };
+		023CC7F325B60B4A00658566 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		023CC7F725B633E500658566 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		023CC7FB25B6366E00658566 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		025004FB25ACB4FF0010103D /* WeatherApp_FinalTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp_FinalTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025004FE25ACB4FF0010103D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0250050725ACB4FF0010103D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -133,6 +141,23 @@
 			path = MainView;
 			sourceTree = "<group>";
 		};
+		023CC7F225B60B3E00658566 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				023CC7F325B60B4A00658566 /* Coordinator.swift */,
+				023CC7F725B633E500658566 /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		023CC7FA25B6366000658566 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				023CC7FB25B6366E00658566 /* SettingsCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		025004F225ACB4FF0010103D = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +229,7 @@
 		02BEC63A25ADAF050034438E /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				023CC7EF25B60AE400658566 /* CurrentWeatherCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -254,6 +280,7 @@
 		02CC775525ADD25C0034053B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				023CC7F225B60B3E00658566 /* Coordinator */,
 				02EDEEFF25B492B3009D7702 /* UserDefaults */,
 				02EDEEFA25B46F2E009D7702 /* Subclasses */,
 				02D13EA125B1C8E1004A5885 /* Networking */,
@@ -338,6 +365,7 @@
 		02EDEF1525B4F63D009D7702 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				023CC7FA25B6366000658566 /* Coordinator */,
 				02EDEF2F25B54442009D7702 /* ViewModel */,
 				02EDEF1625B4F642009D7702 /* View */,
 			);
@@ -519,6 +547,7 @@
 			files = (
 				02CC777125AE2DC40034053B /* SearchViewController.swift in Sources */,
 				025004FF25ACB4FF0010103D /* AppDelegate.swift in Sources */,
+				023CC7F825B633E500658566 /* AppCoordinator.swift in Sources */,
 				02EDEF1925B4F658009D7702 /* SettingsViewController.swift in Sources */,
 				02EDEF2725B542E7009D7702 /* UITableView+Extensions.swift in Sources */,
 				02CC777A25AE32A00034053B /* CurrentWeather.swift in Sources */,
@@ -534,11 +563,14 @@
 				02EDEF0125B492BE009D7702 /* Defaults.swift in Sources */,
 				02D13EAD25B1EBA2004A5885 /* WeatherInformation.swift in Sources */,
 				02EDEEF525B46EA0009D7702 /* BlurView.swift in Sources */,
+				023CC7F425B60B4A00658566 /* Coordinator.swift in Sources */,
+				023CC7F025B60AE400658566 /* CurrentWeatherCoordinator.swift in Sources */,
 				02D13EAA25B1CD7E004A5885 /* WeatherInformationRepository.swift in Sources */,
 				021BB46925B5CF1800005BB3 /* SettingsView.swift in Sources */,
 				02EDEF2425B54100009D7702 /* LocationsView.swift in Sources */,
 				02EDEF1F25B53F0F009D7702 /* CityTableViewCell.swift in Sources */,
 				02BEC64C25ADCEEA0034438E /* CurrentWeatherViewController.swift in Sources */,
+				023CC7FC25B6366E00658566 /* SettingsCoordinator.swift in Sources */,
 				025AA35F25B0D15200E32DE0 /* WeatherConditionsStackView.swift in Sources */,
 				023CC7EC25B5F79300658566 /* ConditionSelectionView.swift in Sources */,
 				02D13EA325B1C8F0004A5885 /* RestManager.swift in Sources */,

@@ -12,6 +12,8 @@ class LocationsView: UIView {
     //MARK: Properties
     var cities: [String] = []
     
+    var goToWeatherInformation: (() -> Void)?
+    
     let sectionNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -87,5 +89,11 @@ extension LocationsView: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: cityName)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCity = cities[indexPath.row]
+        Defaults.saveCity(selectedCity)
+        goToWeatherInformation?()
     }
 }
