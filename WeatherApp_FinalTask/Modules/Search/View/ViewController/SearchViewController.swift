@@ -160,6 +160,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedCity = viewModel.screenData[indexPath.row]
         
         Defaults.saveCity(selectedCity)
+        CoreDataManager.save(named: selectedCity)
         
         presentingViewController?.dismiss(animated: false, completion: nil)
     }

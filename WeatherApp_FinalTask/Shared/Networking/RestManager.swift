@@ -21,11 +21,9 @@ public class RestManager {
     
     public static func requestObservable<T: Codable>(url: String) -> AnyPublisher<T, NetworkError> {
         return Future { promise in
-            print(url)
             guard let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 return promise(.failure(NetworkError.invalidUrl))
             }
-            print(encodedUrl)
             let request = RestManager.manager
                 .request(encodedUrl, encoding: URLEncoding.default)
                 .validate()

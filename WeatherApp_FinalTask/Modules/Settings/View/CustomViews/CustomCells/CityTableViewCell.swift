@@ -52,6 +52,14 @@ private extension CityTableViewCell {
             make.top.bottom.trailing.equalTo(self)
         }
     }
+    
+    func setupButtonActions() {
+        deleteButton.addTarget(self, action: #selector(deleteCityFromDB), for: .touchUpInside)
+    }
+    
+    @objc func deleteCityFromDB() {
+        
+    }
 }
 
 extension CityTableViewCell {

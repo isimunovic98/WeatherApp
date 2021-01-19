@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class SettingsViewController: UIViewController {
     //MARK: Properties
@@ -14,6 +15,8 @@ class SettingsViewController: UIViewController {
     
     var viewModel: SettingsViewModel
 
+    var disposeBag = Set<AnyCancellable>()
+    
     let settingsView: SettingsView = {
         let view = SettingsView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +46,8 @@ extension SettingsViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        settingsView.configure(with: viewModel.selectedCities)
+        viewModel.loadData.send()
+        print(CoreDataManager.fetchCities())
     }
 }
 
@@ -60,6 +64,10 @@ private extension SettingsViewController {
             make.leading.bottom.trailing.equalToSuperview().inset(10)
         }
     }
+    
+    func reloadView() {
+        settingsView.configure(with: viewModel.screenData)
+    }
 }
 
 //MARK: Bindings
@@ -68,5 +76,16 @@ private extension SettingsViewController {
         settingsView.locationsView.goToWeatherInformation = { [weak self] in
             self?.coordinator?.goToWeatherInformation()
         }
+        
+        let loadData = viewModel.initializeScreenData(for: viewModel.loadData)
+        loadData.store(in: &disposeBag)
+        
+        viewModel.screenDataReadyPublisher
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [weak self] _ in
+                self?.reloadView()
+            })
+            .store(in: &disposeBag)
     }
 }
