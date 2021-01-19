@@ -21,6 +21,6 @@ struct Constants {
     }
     
     static func cities(named cityName: String) -> String {
-        return "https://secure.geonames.org/searchJSON?name_startsWith=\(cityName)&maxRows=10&username=isimunovic"
+        return "https://secure.geonames.org/searchJSON?name_startsWith=\(cityName)&maxRows=10&username=tgelesic"
     }
 }

@@ -14,7 +14,7 @@ class SearchViewModel {
     
     var screenData: [String] = []
     
-    let loadData = CurrentValueSubject<String, Never>("")
+    let loadData = PassthroughSubject<String, Never>()
     var screenDataReadyPublisher = PassthroughSubject<Void, Never>()
     var errorPublisher = PassthroughSubject<String?, Never>()
 
@@ -25,10 +25,9 @@ class SearchViewModel {
 }
 
 extension SearchViewModel {
-    func initializeScreenData(for subject: CurrentValueSubject<String, Never>) -> AnyCancellable {
+    func initializeScreenData(for subject: PassthroughSubject<String, Never>) -> AnyCancellable {
         return subject
             .flatMap{ [unowned self] (value) -> AnyPublisher<GeoNames, NetworkError> in
-               // let encodedName = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
                 return self.geoNamesRepository.getCities(named: value)
             }
             .subscribe(on: DispatchQueue.global(qos: .background))
