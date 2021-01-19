@@ -63,9 +63,11 @@ class CoreDataManager {
     }
     
     //DELETE
-    private static func deleteCity(named name: String) {
+    static func deleteCity(named name: String) {
         let deleteRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CityEntity")
-        deleteRequest.predicate = NSPredicate(format: "name = %s", name)
+        let predicate = NSPredicate(format: "name == %@", name)
+        deleteRequest.predicate = predicate
+        
         if let result = try? context.fetch(deleteRequest) {
             for object in result {
                 context.delete(object as! NSManagedObject)

@@ -10,6 +10,8 @@ import SnapKit
 
 class CityTableViewCell: UITableViewCell {
     //MARK: Properties
+    var deleteCity: (() -> Void)?
+    
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -39,6 +41,7 @@ private extension CityTableViewCell {
     func setupUI() {
         contentView.addSubviews([deleteButton, cityNameLabel])
         setupLayout()
+        setupButtonActions()
     }
     
     func setupLayout() {
@@ -54,11 +57,11 @@ private extension CityTableViewCell {
     }
     
     func setupButtonActions() {
-        deleteButton.addTarget(self, action: #selector(deleteCityFromDB), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
-    @objc func deleteCityFromDB() {
-        
+    @objc func deleteButtonTapped() {
+        deleteCity?()
     }
 }
 

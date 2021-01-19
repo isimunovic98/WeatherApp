@@ -12,6 +12,8 @@ class LocationsView: UIView {
     //MARK: Properties
     var cities: [String] = []
     
+    var deleteCity: ((Int) -> Void)?
+    
     var goToWeatherInformation: (() -> Void)?
     
     let sectionNameLabel: UILabel = {
@@ -87,6 +89,10 @@ extension LocationsView: UITableViewDelegate, UITableViewDataSource {
         let cell: CityTableViewCell = tableView.dequeue(for: indexPath)
         
         cell.configure(with: cityName)
+        
+        cell.deleteCity = { [weak self] in
+            self?.deleteCity?(indexPath.row)
+        }
         
         return cell
     }

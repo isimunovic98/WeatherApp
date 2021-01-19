@@ -46,8 +46,7 @@ extension SettingsViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.loadData.send()
-        print(CoreDataManager.fetchCities())
+        viewModel.loadData.send(nil)
     }
 }
 
@@ -68,6 +67,11 @@ private extension SettingsViewController {
     func reloadView() {
         settingsView.configure(with: viewModel.screenData)
     }
+    
+    private func processDeleteTapped(on index: Int) {
+        viewModel.deleteButtonTapped.send(index)
+    }
+
 }
 
 //MARK: Bindings
@@ -77,15 +81,24 @@ private extension SettingsViewController {
             self?.coordinator?.goToWeatherInformation()
         }
         
+        settingsView.locationsView.deleteCity = { [weak self] index in
+            self?.processDeleteTapped(on: index)
+        }
+        
         let loadData = viewModel.initializeScreenData(for: viewModel.loadData)
         loadData.store(in: &disposeBag)
         
         viewModel.screenDataReadyPublisher
-            .subscribe(on: DispatchQueue.global(qos: .background))
+            .subscribe(on: RunLoop.main)
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] _ in
                 self?.reloadView()
             })
             .store(in: &disposeBag)
+        
+        let deleteListener = viewModel.attachDeleteButtonClickListener(listener: viewModel.deleteButtonTapped)
+        deleteListener.store(in: &disposeBag)
     }
+    
+    
 }
