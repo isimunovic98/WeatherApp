@@ -82,7 +82,6 @@ private extension SettingsView {
     }
     
     @objc func applyButtonPressed() {
-        print("apply pressed")
         unitsView.saveSelection()
         conditionsView.saveSelection()
     }

@@ -168,7 +168,10 @@ private extension CurrentWeatherViewController {
 }
 extension CurrentWeatherViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        let searchViewController = SearchViewController()
+        let searchRepository = GeoNamesRepositoryImpl()
+        let vm = SearchViewModel(repository: searchRepository)
+        let searchViewController = SearchViewController(viewModel: vm)
+        searchViewController.modalPresentationStyle = .fullScreen
         self.present(searchViewController, animated: false, completion: nil)
     }
 }

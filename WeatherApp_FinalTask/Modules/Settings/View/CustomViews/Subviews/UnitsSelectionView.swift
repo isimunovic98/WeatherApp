@@ -95,10 +95,8 @@ private extension UnitsSelectionView {
 extension UnitsSelectionView {
     func saveSelection() {
         if metricSelectionButton.isSelected {
-            print("saving metric")
             Defaults.saveUnits(Units.metric.rawValue)
         } else {
-            print("saving imperial")
             Defaults.saveUnits(Units.imperial.rawValue)
             print(Defaults.getSelectedUnits())
         }
