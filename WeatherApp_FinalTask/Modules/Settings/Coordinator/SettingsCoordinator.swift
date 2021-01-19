@@ -22,6 +22,7 @@ class SettingsCoordinator: Coordinator {
         let viewModel = SettingsViewModel()
         let viewController = SettingsViewController(viewModel: viewModel)
         viewController.coordinator = self
+        navigationController.navigationBar.isHidden = false
         navigationController.pushViewController(viewController, animated: false)
     }
     

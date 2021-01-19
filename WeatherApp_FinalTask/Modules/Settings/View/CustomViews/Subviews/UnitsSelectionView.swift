@@ -17,6 +17,7 @@ class UnitsSelectionView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Units"
+        label.font = label.font.withSize(25)
         label.textAlignment = .center
         return label
     }()

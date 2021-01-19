@@ -62,7 +62,7 @@ private extension SettingsView {
         
         unitsView.snp.makeConstraints { (make) in
             make.top.equalTo(locationsView.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self)
+            make.leading.trailing.equalTo(self).inset(15)
             make.height.equalTo(100)
         }
         

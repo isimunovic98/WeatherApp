@@ -23,6 +23,7 @@ class CurrentWeatherCoordinator: Coordinator {
         let viewModel = CurrentWeatherViewModel(repository: repository)
         let viewController = CurrentWeatherViewController(viewModel: viewModel)
         viewController.coordinator = self
+        navigationController.navigationBar.isHidden = true
         navigationController.pushViewController(viewController, animated: false)
     }
     

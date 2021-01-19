@@ -18,6 +18,7 @@ class AppCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         self.navigationController = UINavigationController()
+        setupNavigatonBar()
     }
     
     func start() {
@@ -39,5 +40,16 @@ class AppCoordinator: Coordinator {
     
     func goToWeatherInformation() {
         navigationController.popViewController(animated: true)
+    }
+}
+
+private extension AppCoordinator {
+    func setupNavigatonBar() {
+        navigationController.navigationBar.backgroundColor = .clear
+        navigationController.navigationBar.isTranslucent = true
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        
+        UIBarButtonItem.appearance().tintColor = .black
     }
 }

@@ -20,6 +20,7 @@ class LocationsView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Locations"
+        label.font = label.font.withSize(25)
         label.textAlignment = .center
         return label
     }()
@@ -28,6 +29,7 @@ class LocationsView: UIView {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "settingsBackgroundColor")
         return tableView
     }()
     

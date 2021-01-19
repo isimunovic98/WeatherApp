@@ -15,6 +15,7 @@ class ConditionsView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Conditions"
+        label.font = label.font.withSize(25)
         label.textAlignment = .center
         return label
     }()

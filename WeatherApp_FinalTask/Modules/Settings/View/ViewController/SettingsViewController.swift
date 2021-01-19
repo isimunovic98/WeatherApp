@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray4
+        setupAppearance()
         setupView()
         setupBindings()
     }
@@ -47,6 +47,13 @@ extension SettingsViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadData.send(nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParent {
+            navigationController?.navigationBar.isHidden = true
+        }
     }
 }
 
@@ -68,8 +75,12 @@ private extension SettingsViewController {
         settingsView.configure(with: viewModel.screenData)
     }
     
-    private func processDeleteTapped(on index: Int) {
+    func processDeleteTapped(on index: Int) {
         viewModel.deleteButtonTapped.send(index)
+    }
+    
+    func setupAppearance() {
+        view.backgroundColor = UIColor(named: "settingsBackgroundColor")
     }
 
 }

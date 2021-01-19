@@ -15,7 +15,8 @@ class CityTableViewCell: UITableViewCell {
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
+        button.setImage(UIImage(systemName: "trash"), for: .normal)
+        button.tintColor = .systemRed
         return button
     }()
     
@@ -39,6 +40,7 @@ class CityTableViewCell: UITableViewCell {
 //MARK: - UI
 private extension CityTableViewCell {
     func setupUI() {
+        backgroundColor = UIColor(named: "settingsBackgroundColor")
         contentView.addSubviews([deleteButton, cityNameLabel])
         setupLayout()
         setupButtonActions()
