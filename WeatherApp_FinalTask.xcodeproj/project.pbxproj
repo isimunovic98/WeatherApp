@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0203CA4625B78792001CE078 /* BackgroundImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0203CA4525B78792001CE078 /* BackgroundImageManager.swift */; };
 		021BB46925B5CF1800005BB3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021BB46825B5CF1800005BB3 /* SettingsView.swift */; };
 		023552AB25B5CA5A00284175 /* UnitsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */; };
 		023CC7E925B5DE0900658566 /* ConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CC7E825B5DE0900658566 /* ConditionsView.swift */; };
@@ -57,6 +58,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0203CA4525B78792001CE078 /* BackgroundImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageManager.swift; sourceTree = "<group>"; };
 		021BB46825B5CF1800005BB3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		023552AA25B5CA5A00284175 /* UnitsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSelectionView.swift; sourceTree = "<group>"; };
 		023CC7E825B5DE0900658566 /* ConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionsView.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 			children = (
 				02EDEEFB25B46F3D009D7702 /* BlurViewManager.swift */,
 				02EDEF2C25B5431F009D7702 /* ReusableView.swift */,
+				0203CA4525B78792001CE078 /* BackgroundImageManager.swift */,
 			);
 			path = Subclasses;
 			sourceTree = "<group>";
@@ -624,6 +627,7 @@
 				025004FF25ACB4FF0010103D /* AppDelegate.swift in Sources */,
 				023CC7F825B633E500658566 /* AppCoordinator.swift in Sources */,
 				0299FCF025B74D3000226814 /* CityEntity+CoreDataClass.swift in Sources */,
+				0203CA4625B78792001CE078 /* BackgroundImageManager.swift in Sources */,
 				02EDEF1925B4F658009D7702 /* SettingsViewController.swift in Sources */,
 				02EDEF2725B542E7009D7702 /* UITableView+Extensions.swift in Sources */,
 				02CC777A25AE32A00034053B /* CurrentWeather.swift in Sources */,

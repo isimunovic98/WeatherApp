@@ -34,8 +34,9 @@ class CurrentWeatherViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        button.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-        button.tintColor = .black
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .medium)
+        button.setImage(UIImage(systemName: "gearshape", withConfiguration: largeConfig), for: .normal)
+        button.tintColor = .gray
         return button
     }()
     
@@ -97,13 +98,13 @@ private extension CurrentWeatherViewController {
         }
         
         settingsButton.snp.makeConstraints { (make) in
-            make.size.equalTo(50)
+            make.size.equalTo(35)
             make.leading.equalTo(view).inset(10)
             make.top.equalTo(view.safeAreaLayoutGuide)        }
         
         searchBar.snp.makeConstraints { (make) in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(settingsButton.snp.trailing).inset(10)
+            make.centerY.equalTo(settingsButton)
+            make.leading.equalTo(settingsButton.snp.trailing).offset(10)
             make.trailing.equalTo(view).inset(10)
         }
         
@@ -117,6 +118,7 @@ private extension CurrentWeatherViewController {
     func reloadView() {
         guard let screenData = viewModel.screenData else { return }
         currentWeatherView.configure(with: screenData)
+        configureBackgroundImage(for: screenData.weatherId,and: screenData.icon)
     }
     
     func showBlurView( _ shouldShowLoader: Bool) {
@@ -125,6 +127,11 @@ private extension CurrentWeatherViewController {
         } else {
             removeBlurView()
         }
+    }
+    
+    func configureBackgroundImage(for id: Int, and dayNightIndicator: String) {
+        let backgroundImage = BackgroundImageManager.getBackgroundImage(for: id, and: dayNightIndicator)
+        backgroundImageView.image = backgroundImage
     }
     
     //MARK: Actions
