@@ -10,7 +10,9 @@ import SnapKit
 import Combine
 
 class SearchViewController: UIViewController {
-    //MARK: Properties    
+    //MARK: Properties
+    let textDidChangePublisher = PassthroughSubject<String, Never>()
+    
     var viewModel: SearchViewModel
     
     var disposeBag = Set<AnyCancellable>()
@@ -113,6 +115,13 @@ private extension SearchViewController {
                 self?.tableView.reloadData()
             })
             .store(in: &disposeBag)
+        
+        textDidChangePublisher
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .sink(receiveValue: { input in
+                self.viewModel.loadData.send(input)
+            })
+            .store(in: &disposeBag)
     }
     
     func configureTableView() {
@@ -130,7 +139,7 @@ private extension SearchViewController {
     }
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate, UISearchDisplayDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let input = searchBar.text else {
@@ -138,6 +147,13 @@ extension SearchViewController: UISearchBarDelegate {
         }
         searchBar.endEditing(true)
         viewModel.loadData.send(input)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let input = searchBar.text else {
+            return
+        }
+        textDidChangePublisher.send(input)
     }
 }
 
