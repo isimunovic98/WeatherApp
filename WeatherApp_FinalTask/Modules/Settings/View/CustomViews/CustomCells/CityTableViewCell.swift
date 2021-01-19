@@ -37,12 +37,11 @@ class CityTableViewCell: UITableViewCell {
 //MARK: - UI
 private extension CityTableViewCell {
     func setupUI() {
-        contentView.addSubview(deleteButton)
-        contentView.addSubview(cityNameLabel)
-        setupConstraints()
+        contentView.addSubviews([deleteButton, cityNameLabel])
+        setupLayout()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         deleteButton.snp.makeConstraints { (make) in
             make.size.equalTo(20)
             make.leading.bottom.equalTo(self).inset(10)

@@ -45,6 +45,7 @@ class TemperatureView: UIView {
         return stackView
     }()
     
+    //MARK: Init
     override init(frame: CGRect) {
       super.init(frame: frame)
       setupView()
@@ -60,8 +61,8 @@ class TemperatureView: UIView {
 private extension TemperatureView {
     func setupView() {
         addSubview(stackView)
-        stackView.addArrangedSubview(temperatureLabel)
-        stackView.addArrangedSubview(temperatureUnitLabel)
+        let views = [temperatureLabel, temperatureUnitLabel]
+        stackView.addArrangedSubviews(views)
         setupLayout()
 
     }
@@ -71,9 +72,4 @@ private extension TemperatureView {
             make.edges.equalTo(self).inset(10)
         }
     }
-}
-
-//MARK: - Configuration
-extension TemperatureView {
-
 }

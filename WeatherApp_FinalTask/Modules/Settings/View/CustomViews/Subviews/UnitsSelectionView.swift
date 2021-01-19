@@ -60,11 +60,11 @@ private extension UnitsSelectionView {
     func setupView() {
         let views = [sectionNameLabel, metricSelectionButton, imperialSelectionButton]
         addSubviews(views)
-        setupConstraints()
+        setupLayout()
         setupButtonActions()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self)
         }

@@ -47,12 +47,12 @@ class ConditionSelectionView: UIView {
 private extension ConditionSelectionView {
     func setupView() {
         addSubview(stackView)
-        stackView.addArrangedSubview(conditionImageView)
-        stackView.addArrangedSubview(conditionSelectionButton)
-        setupConstraints()
+        stackView.addArrangedSubviews([conditionImageView, conditionSelectionButton])
+
+        setupLayout()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         stackView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }

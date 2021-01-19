@@ -63,6 +63,7 @@ class CurrentWeatherView: UIView {
         return view
     }()
     
+    //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()

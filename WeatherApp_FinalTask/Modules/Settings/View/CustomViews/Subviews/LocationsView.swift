@@ -44,13 +44,13 @@ class LocationsView: UIView {
 //MARK: - UI
 private extension LocationsView {
     func setupView() {
-        addSubview(sectionNameLabel)
-        addSubview(tableView)
-        setupConstraints()
+        let views = [sectionNameLabel, tableView]
+        addSubviews(views)
+        setupLayout()
         configureTableView()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(self)
         }

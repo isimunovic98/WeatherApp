@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 class SearchViewModel {
+    //MARK: Properties
     var geoNamesRepository: GeoNamesRepository
     
     var screenData: [String] = []
@@ -17,6 +18,7 @@ class SearchViewModel {
     var screenDataReadyPublisher = PassthroughSubject<Void, Never>()
     var errorPublisher = PassthroughSubject<String?, Never>()
 
+    //MARK: init
     public init(repository: GeoNamesRepository) {
         self.geoNamesRepository = repository
     }

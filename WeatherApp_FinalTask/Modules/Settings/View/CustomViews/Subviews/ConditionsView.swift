@@ -62,17 +62,17 @@ class ConditionsView: UIView {
 
 private extension ConditionsView {
     func setupView() {
-        addSubview(sectionNameLabel)
-        addSubview(stackView)
-        stackView.addArrangedSubview(windSpeedConditionView)
-        stackView.addArrangedSubview(pressureConditionView)
-        stackView.addArrangedSubview(humidityConditionView)
-        setupConstraints()
+        addSubviews([sectionNameLabel, stackView])
+        
+        let views = [windSpeedConditionView, pressureConditionView, humidityConditionView]
+        stackView.addArrangedSubviews(views)
+        
+        setupLayout()
         setupButtons()
         configureButtons()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(self)
         }
