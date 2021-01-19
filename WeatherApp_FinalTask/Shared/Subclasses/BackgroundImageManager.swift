@@ -10,7 +10,6 @@ import UIKit
 class BackgroundImageManager {
     static func getBackgroundImage(for weatherId: Int,and dayNightIndicator: String) -> UIImage {
         let indicator = dayNightIndicator.suffix(1)
-        print(indicator)
         switch weatherId {
         case 200..<233:
             return UIImage(named: "body_image-thunderstorm")!
