@@ -30,7 +30,8 @@ class SearchViewController: UIViewController {
     let dismissButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.tintColor = .black
         return button
     }()
     
@@ -50,13 +51,23 @@ class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+
+}
+
+//MARK: - Lifecycle
+extension SearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .white
         setupView()
         setupBindings()
         configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchBar.delegate = self
+        activateSearch()
     }
 }
 
@@ -64,21 +75,21 @@ private extension SearchViewController {
     func setupView() {
         let views = [searchBar, tableView, dismissButton]
         view.addSubviews(views)
-        searchBar.delegate = self
-        setupConstraints()
-        activateSearch()
+        setupLayout()
+        setupButtonActions()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         dismissButton.snp.makeConstraints { (make) in
-            make.size.equalTo(45)
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.size.equalTo(25)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
             make.trailing.equalToSuperview().inset(20)
         }
         searchBar.snp.makeConstraints { (make) in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.equalToSuperview().inset(20)
-            make.trailing.equalTo(dismissButton.snp.leading).inset(20)
+            make.centerY.equalTo(dismissButton)
+            make.trailing.equalTo(dismissButton.snp.leading).inset(-20)
         }
         
         tableView.snp.makeConstraints { (make) in
@@ -107,6 +118,14 @@ private extension SearchViewController {
     func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    func setupButtonActions() {
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func dismissButtonTapped() {
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
