@@ -165,6 +165,7 @@ extension CurrentWeatherViewController {
             .sink{ [weak self] errorMessage in
                 guard let message = errorMessage else { return }
                 self?.presentAlert(with: message)
+                self?.showBlurView(false)
             }
             .store(in: &disposeBag)
     }
@@ -173,10 +174,6 @@ extension CurrentWeatherViewController {
 //MARK: - Seach Bar Delegate
 extension CurrentWeatherViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        let searchRepository = GeoNamesRepositoryImpl()
-        let vm = SearchViewModel(repository: searchRepository)
-        let searchViewController = SearchViewController(viewModel: vm)
-        searchViewController.modalPresentationStyle = .fullScreen
-        self.present(searchViewController, animated: false, completion: nil)
+        coordinator?.presentSearchScreen(on: self)
     }
 }

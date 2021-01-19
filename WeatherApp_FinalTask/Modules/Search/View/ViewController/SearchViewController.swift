@@ -10,7 +10,7 @@ import SnapKit
 import Combine
 
 class SearchViewController: UIViewController {
-    //MARK: Properties
+    //MARK: Properties    
     var viewModel: SearchViewModel
     
     var disposeBag = Set<AnyCancellable>()
@@ -120,12 +120,13 @@ private extension SearchViewController {
         tableView.dataSource = self
     }
     
+    //MARK: Actions
     func setupButtonActions() {
         dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
     }
     
     @objc func dismissButtonTapped() {
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: false, completion: nil)
     }
 }
 
@@ -153,5 +154,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = cityName
                
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCity = viewModel.screenData[indexPath.row]
+        
+        Defaults.saveCity(selectedCity)
+        
+        presentingViewController?.dismiss(animated: false, completion: nil)
     }
 }

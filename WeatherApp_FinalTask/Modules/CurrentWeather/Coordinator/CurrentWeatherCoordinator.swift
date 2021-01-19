@@ -29,4 +29,10 @@ class CurrentWeatherCoordinator: Coordinator {
     func goToSettings() {
         parent?.goToSettings()
     }
+    
+    func presentSearchScreen(on viewController: UIViewController) {
+        let child = SearchCoordinator(presenter: viewController, navigationController: navigationController)
+        childCoordinators.append(child)
+        child.start()
+    }
 }
