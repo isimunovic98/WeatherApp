@@ -23,10 +23,17 @@ class CurrentWeatherCoordinator: Coordinator {
         let viewModel = CurrentWeatherViewModel(repository: repository)
         let viewController = CurrentWeatherViewController(viewModel: viewModel)
         viewController.coordinator = self
+        navigationController.navigationBar.isHidden = true
         navigationController.pushViewController(viewController, animated: false)
     }
     
     func goToSettings() {
         parent?.goToSettings()
+    }
+    
+    func presentSearchScreen(on viewController: UIViewController) {
+        let child = SearchCoordinator(presenter: viewController, navigationController: navigationController)
+        childCoordinators.append(child)
+        child.start()
     }
 }

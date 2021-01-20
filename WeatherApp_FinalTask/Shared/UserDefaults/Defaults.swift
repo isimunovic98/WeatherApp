@@ -29,7 +29,7 @@ struct Defaults {
     
     static func getSelectedCity() -> String {
         guard let selectedCity = userDefault.string(forKey: DefaultsKey.selectedCity.rawValue) else {
-            return "Vienna"
+            return "New York"
         }
         
         return selectedCity

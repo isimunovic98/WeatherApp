@@ -13,21 +13,21 @@ class WeatherConditionsStackView: UIView {
     let windSpeedConditionView: WeatherConditionView = {
         let view = WeatherConditionView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.conditionImage.image = UIImage(named: Constants.ConditionImages.windIcon.rawValue)
+        view.conditionImageView.image = UIImage(named: Constants.ConditionImages.windIcon.rawValue)
         return view
     }()
     
     let pressureConditionView: WeatherConditionView = {
         let view = WeatherConditionView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.conditionImage.image = UIImage(named: Constants.ConditionImages.pressureIcon.rawValue)
+        view.conditionImageView.image = UIImage(named: Constants.ConditionImages.pressureIcon.rawValue)
         return view
     }()
     
     let humidityConditionView: WeatherConditionView = {
         let view = WeatherConditionView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.conditionImage.image = UIImage(named: Constants.ConditionImages.humidityIcon.rawValue)
+        view.conditionImageView.image = UIImage(named: Constants.ConditionImages.humidityIcon.rawValue)
         return view
     }()
 
@@ -40,6 +40,7 @@ class WeatherConditionsStackView: UIView {
         return stackView
     }()
     
+    //MARK: Init
     override init(frame: CGRect) {
       super.init(frame: frame)
       setupView()
@@ -55,9 +56,8 @@ class WeatherConditionsStackView: UIView {
 private extension WeatherConditionsStackView {
     func setupView() {
         addSubview(stackView)
-        stackView.addArrangedSubview(windSpeedConditionView)
-        stackView.addArrangedSubview(pressureConditionView)
-        stackView.addArrangedSubview(humidityConditionView)
+        let views = [windSpeedConditionView, pressureConditionView, humidityConditionView]
+        stackView.addArrangedSubviews(views)
         setupLayout()
 
     }

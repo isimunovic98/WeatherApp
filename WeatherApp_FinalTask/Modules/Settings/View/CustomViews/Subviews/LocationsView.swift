@@ -12,12 +12,15 @@ class LocationsView: UIView {
     //MARK: Properties
     var cities: [String] = []
     
+    var deleteCity: ((Int) -> Void)?
+    
     var goToWeatherInformation: (() -> Void)?
     
     let sectionNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Locations"
+        label.font = label.font.withSize(25)
         label.textAlignment = .center
         return label
     }()
@@ -26,6 +29,7 @@ class LocationsView: UIView {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "settingsBackgroundColor")
         return tableView
     }()
     
@@ -44,13 +48,13 @@ class LocationsView: UIView {
 //MARK: - UI
 private extension LocationsView {
     func setupView() {
-        addSubview(sectionNameLabel)
-        addSubview(tableView)
-        setupConstraints()
+        let views = [sectionNameLabel, tableView]
+        addSubviews(views)
+        setupLayout()
         configureTableView()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(self)
         }
@@ -87,6 +91,10 @@ extension LocationsView: UITableViewDelegate, UITableViewDataSource {
         let cell: CityTableViewCell = tableView.dequeue(for: indexPath)
         
         cell.configure(with: cityName)
+        
+        cell.deleteCity = { [weak self] in
+            self?.deleteCity?(indexPath.row)
+        }
         
         return cell
     }

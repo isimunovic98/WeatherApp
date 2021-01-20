@@ -8,6 +8,7 @@
 import UIKit
 
 class SettingsView: UIView {
+    //MARK: Properties
     let locationsView: LocationsView = {
         let view = LocationsView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -49,11 +50,11 @@ private extension SettingsView {
     func setupView() {
         let views = [locationsView, unitsView, conditionsView, applyButton]
         addSubviews(views)
-        setupConstraints()
+        setupLayout()
         setupApplyButton()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         locationsView.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(self)
             make.height.equalTo(300)
@@ -61,7 +62,7 @@ private extension SettingsView {
         
         unitsView.snp.makeConstraints { (make) in
             make.top.equalTo(locationsView.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self)
+            make.leading.trailing.equalTo(self).inset(15)
             make.height.equalTo(100)
         }
         
@@ -77,12 +78,12 @@ private extension SettingsView {
         }
     }
     
+    //MARK: Actions
     func setupApplyButton() {
         applyButton.addTarget(self, action: #selector(applyButtonPressed), for: .touchUpInside)
     }
     
     @objc func applyButtonPressed() {
-        print("apply pressed")
         unitsView.saveSelection()
         conditionsView.saveSelection()
     }

@@ -10,10 +10,13 @@ import SnapKit
 
 class CityTableViewCell: UITableViewCell {
     //MARK: Properties
+    var deleteCity: (() -> Void)?
+    
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
+        button.setImage(UIImage(systemName: "trash"), for: .normal)
+        button.tintColor = .systemRed
         return button
     }()
     
@@ -37,12 +40,13 @@ class CityTableViewCell: UITableViewCell {
 //MARK: - UI
 private extension CityTableViewCell {
     func setupUI() {
-        contentView.addSubview(deleteButton)
-        contentView.addSubview(cityNameLabel)
-        setupConstraints()
+        backgroundColor = UIColor(named: "settingsBackgroundColor")
+        contentView.addSubviews([deleteButton, cityNameLabel])
+        setupLayout()
+        setupButtonActions()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         deleteButton.snp.makeConstraints { (make) in
             make.size.equalTo(20)
             make.leading.bottom.equalTo(self).inset(10)
@@ -52,6 +56,14 @@ private extension CityTableViewCell {
             make.leading.equalTo(deleteButton.snp.trailing).offset(5)
             make.top.bottom.trailing.equalTo(self)
         }
+    }
+    
+    func setupButtonActions() {
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func deleteButtonTapped() {
+        deleteCity?()
     }
 }
 

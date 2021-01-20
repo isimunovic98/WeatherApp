@@ -10,6 +10,7 @@ import Foundation
 public enum NetworkError: Error {
     case generalError
     case parseFailed
+    case invalidUrl
 }
 
 extension NetworkError: LocalizedError {
@@ -19,6 +20,8 @@ extension NetworkError: LocalizedError {
             return "Parse failed"
         case .generalError:
             return "An error occured, please try again"
+        case .invalidUrl:
+            return "Invalid URL"
         }
     }
 }
