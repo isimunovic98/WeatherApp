@@ -11,8 +11,7 @@ import SnapKit
 class WeatherConditionView: UIView {
 
     //MARK: Properties
-    
-    let conditionImage: UIImageView = {
+    let conditionImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -34,6 +33,7 @@ class WeatherConditionView: UIView {
         return stackView
     }()
     
+    //MARK: Init
     override init(frame: CGRect) {
       super.init(frame: frame)
       setupView()
@@ -49,8 +49,8 @@ class WeatherConditionView: UIView {
 private extension WeatherConditionView {
     func setupView() {
         addSubview(stackView)
-        stackView.addArrangedSubview(conditionImage)
-        stackView.addArrangedSubview(conditionValueLabel)
+        let views = [conditionImageView, conditionValueLabel]
+        stackView.addArrangedSubviews(views)
         setupLayout()
 
     }
@@ -62,9 +62,4 @@ private extension WeatherConditionView {
             make.height.equalTo(100)
         }
     }
-}
-
-//MARK: - Configuration
-extension WeatherConditionView {
-
 }

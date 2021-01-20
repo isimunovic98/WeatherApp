@@ -12,6 +12,8 @@ import Combine
 class CurrentWeatherViewController: UIViewController {
     
     //MARK: Properties
+    weak var coordinator: CurrentWeatherCoordinator?
+    
     var disposeBag = Set<AnyCancellable>()
     
     private var viewModel: CurrentWeatherViewModel
@@ -32,7 +34,9 @@ class CurrentWeatherViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        button.setImage(UIImage(named: "settings"), for: .normal)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .medium)
+        button.setImage(UIImage(systemName: "gearshape", withConfiguration: largeConfig), for: .normal)
+        button.tintColor = .gray
         return button
     }()
     
@@ -48,6 +52,7 @@ class CurrentWeatherViewController: UIViewController {
         return searchBar
     }()
     
+    //MARK: Init
     init(viewModel: CurrentWeatherViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -56,27 +61,29 @@ class CurrentWeatherViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.loadData.send(true)
-    }
+}
+
+//MARK: - Lifecycle
+extension CurrentWeatherViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         setupView()
         setupBindings()
         setupButtonActions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.loadData.send(true)
     }
 }
+
 //MARK: - UI Setup
 private extension CurrentWeatherViewController {
     func setupView() {
-        view.addSubview(backgroundImageView)
-        view.addSubview(settingsButton)
-        view.addSubview(currentWeatherView)
-        view.addSubview(searchBar)
-
+        let views = [backgroundImageView, settingsButton, currentWeatherView, searchBar]
+        view.addSubviews(views)
         setupAppearance()
         setupLayout()
      }
@@ -91,13 +98,13 @@ private extension CurrentWeatherViewController {
         }
         
         settingsButton.snp.makeConstraints { (make) in
-            make.size.equalTo(50)
+            make.size.equalTo(35)
             make.leading.equalTo(view).inset(10)
             make.top.equalTo(view.safeAreaLayoutGuide)        }
         
         searchBar.snp.makeConstraints { (make) in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(settingsButton.snp.trailing).inset(10)
+            make.centerY.equalTo(settingsButton)
+            make.leading.equalTo(settingsButton.snp.trailing).offset(10)
             make.trailing.equalTo(view).inset(10)
         }
         
@@ -111,18 +118,32 @@ private extension CurrentWeatherViewController {
     func reloadView() {
         guard let screenData = viewModel.screenData else { return }
         currentWeatherView.configure(with: screenData)
+        configureBackgroundImage(for: screenData.weatherId,and: screenData.icon)
     }
     
+    func showBlurView( _ shouldShowLoader: Bool) {
+        if shouldShowLoader {
+            showBlurView()
+        } else {
+            removeBlurView()
+        }
+    }
+    
+    func configureBackgroundImage(for id: Int, and dayNightIndicator: String) {
+        let backgroundImage = BackgroundImageManager.getBackgroundImage(for: id, and: dayNightIndicator)
+        backgroundImageView.image = backgroundImage
+    }
+    
+    //MARK: Actions
     func setupButtonActions() {
-        settingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
     }
     
-    @objc func goToSettings() {
-        let viewModel = SettingsViewModel()
-        let settingsViewController = SettingsViewController(viewModel: viewModel)
-        navigationController?.pushViewController(settingsViewController, animated: false)
+    @objc func settingsButtonPressed() {
+        coordinator?.goToSettings()
     }
 }
+
 //MARK: - Bindings
 extension CurrentWeatherViewController {
     func setupBindings() {
@@ -151,23 +172,15 @@ extension CurrentWeatherViewController {
             .sink{ [weak self] errorMessage in
                 guard let message = errorMessage else { return }
                 self?.presentAlert(with: message)
+                self?.showBlurView(false)
             }
             .store(in: &disposeBag)
     }
 }
 
-private extension CurrentWeatherViewController {
-    private func showBlurView( _ shouldShowLoader: Bool) {
-        if shouldShowLoader {
-            showBlurView()
-        } else {
-            removeBlurView()
-        }
-    }
-}
+//MARK: - Seach Bar Delegate
 extension CurrentWeatherViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        let searchViewController = SearchViewController()
-        self.present(searchViewController, animated: false, completion: nil)
+        coordinator?.presentSearchScreen(on: self)
     }
 }

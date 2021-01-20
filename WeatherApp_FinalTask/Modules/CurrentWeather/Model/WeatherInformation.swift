@@ -9,6 +9,8 @@ import Foundation
 
 struct WeatherInformation {
     var cityName: String
+    var weatherId: Int
+    var icon: String
     var weatherDescription: String
     var currentTemperature: String
     var tempMin: String
@@ -19,6 +21,8 @@ struct WeatherInformation {
     
     init(weatherModel: CurrentWeather) {
         self.cityName = Defaults.getSelectedCity()
+        self.icon = weatherModel.description[0].icon
+        self.weatherId = weatherModel.description[0].id
         self.weatherDescription = weatherModel.description[0].description
         self.currentTemperature = String(format: "%.1f", weatherModel.temperature.currentTemperature)
         self.tempMin = String(format: "%.1f", weatherModel.temperature.tempMin)

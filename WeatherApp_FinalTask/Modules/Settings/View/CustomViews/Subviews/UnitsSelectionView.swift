@@ -17,6 +17,7 @@ class UnitsSelectionView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Units"
+        label.font = label.font.withSize(25)
         label.textAlignment = .center
         return label
     }()
@@ -60,11 +61,11 @@ private extension UnitsSelectionView {
     func setupView() {
         let views = [sectionNameLabel, metricSelectionButton, imperialSelectionButton]
         addSubviews(views)
-        setupConstraints()
+        setupLayout()
         setupButtonActions()
     }
     
-    func setupConstraints() {
+    func setupLayout() {
         sectionNameLabel.snp.makeConstraints { (make) in
             make.leading.trailing.equalTo(self)
         }
@@ -95,10 +96,8 @@ private extension UnitsSelectionView {
 extension UnitsSelectionView {
     func saveSelection() {
         if metricSelectionButton.isSelected {
-            print("saving metric")
             Defaults.saveUnits(Units.metric.rawValue)
         } else {
-            print("saving imperial")
             Defaults.saveUnits(Units.imperial.rawValue)
             print(Defaults.getSelectedUnits())
         }

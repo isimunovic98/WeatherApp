@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 class CurrentWeatherViewModel {
+    //MARK: Properties
     var currentWeatherRepository: WeatherInformationRepository
     
     var screenData: WeatherInformation?
@@ -18,11 +19,13 @@ class CurrentWeatherViewModel {
     var screenDataReadyPublisher = PassthroughSubject<Void, Never>()
     var errorPublisher = PassthroughSubject<String?, Never>()
     
+    //MARK: Init
     public init(repository: WeatherInformationRepository) {
         self.currentWeatherRepository = repository
     }
 }
 
+//MARK: - Public Methods
 extension CurrentWeatherViewModel {
     func initializeScreenData(for subject: CurrentValueSubject<Bool, Never>) -> AnyCancellable {
         return subject.flatMap {[unowned self] (value) -> AnyPublisher<CurrentWeather, NetworkError> in
@@ -48,9 +51,5 @@ extension CurrentWeatherViewModel {
         })
     }
     
-    
-}
-
-private extension CurrentWeatherViewModel {
     
 }
