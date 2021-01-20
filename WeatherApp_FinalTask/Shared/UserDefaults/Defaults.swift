@@ -29,7 +29,7 @@ struct Defaults {
     
     static func getSelectedCity() -> String {
         guard let selectedCity = userDefault.string(forKey: DefaultsKey.selectedCity.rawValue) else {
-            return "Vienna"
+            return "New York"
         }
         
         return selectedCity
@@ -51,14 +51,25 @@ struct Defaults {
         return !userDefault.bool(forKey: DefaultsKey.pressureIsShown.rawValue)
     }
     
+    static func savePressureSelected(_ selected: Bool) {
+        userDefault.set(selected, forKey: DefaultsKey.pressureIsShown.rawValue)
+    }
+    
     static func windSpeedIsHidden() -> Bool {
         return !userDefault.bool(forKey: DefaultsKey.windSpeedIsShown.rawValue)
         
     }
     
+    static func saveWindSpeedSelected(_ selected: Bool) {
+        userDefault.set(selected, forKey: DefaultsKey.windSpeedIsShown.rawValue)
+    }
+    
     static func humidityIsHidden() -> Bool {
         return !userDefault.bool(forKey: DefaultsKey.humidityIsShown.rawValue)
-           
+    }
+    
+    static func saveHumiditySelected(_ selected: Bool) {
+        userDefault.set(selected, forKey: DefaultsKey.humidityIsShown.rawValue)
     }
     
 }
