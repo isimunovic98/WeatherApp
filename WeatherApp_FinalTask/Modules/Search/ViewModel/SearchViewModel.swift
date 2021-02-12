@@ -17,6 +17,7 @@ class SearchViewModel {
     let loadData = PassthroughSubject<String, Never>()
     var screenDataReadyPublisher = PassthroughSubject<Void, Never>()
     var errorPublisher = PassthroughSubject<String?, Never>()
+    var updateSelectedCityPublisher = PassthroughSubject<String, Never>()
 
     //MARK: init
     public init(repository: GeoNamesRepository) {
@@ -47,6 +48,15 @@ extension SearchViewModel {
                 self.screenDataReadyPublisher.send()
             })
     }
+    
+    func attachSelectedCityUpdater(subject: PassthroughSubject<String, Never>) -> AnyCancellable {
+        return subject
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: { [unowned self] cityName in
+                self.updateSelectedCity(cityName)
+            })
+    }
 }
 
 private extension SearchViewModel {
@@ -58,5 +68,10 @@ private extension SearchViewModel {
         }
         
         return screenData
+    }
+    
+    func updateSelectedCity(_ cityName: String) {
+        Defaults.saveCity(cityName)
+        CoreDataManager.save(named: cityName)
     }
 }

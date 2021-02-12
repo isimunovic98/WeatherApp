@@ -9,6 +9,21 @@ import UIKit
 
 class SettingsView: UIView {
     //MARK: Properties
+    var goToWeatherInformation: (() -> Void)?
+    
+    
+    let blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        return blurEffectView
+    }()
+    
+    let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     let locationsView: LocationsView = {
         let view = LocationsView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -48,33 +63,44 @@ class SettingsView: UIView {
 
 private extension SettingsView {
     func setupView() {
-        let views = [locationsView, unitsView, conditionsView, applyButton]
+        backgroundImageView.addSubview(blurEffectView)
+        let views = [backgroundImageView, locationsView, unitsView, conditionsView, applyButton]
         addSubviews(views)
         setupLayout()
         setupApplyButton()
     }
     
     func setupLayout() {
-        locationsView.snp.makeConstraints { (make) in
-            make.top.leading.trailing.equalTo(self)
-            make.height.equalTo(300)
+        blurEffectView.snp.makeConstraints { (make) in
+            make.edges.equalTo(backgroundImageView)
         }
         
-        unitsView.snp.makeConstraints { (make) in
-            make.top.equalTo(locationsView.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self).inset(15)
-            make.height.equalTo(100)
-        }
-        
-        conditionsView.snp.makeConstraints { (make) in
-            make.top.equalTo(unitsView.snp.bottom)
-            make.leading.trailing.equalTo(self)
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self)
         }
         
         applyButton.snp.makeConstraints { (make) in
-            make.top.equalTo(conditionsView.snp.bottom).offset(20)
-            make.leading.trailing.equalTo(self).inset(100)
-            make.height.equalTo(40)
+            make.bottom.equalTo(self).inset(20)
+            make.centerX.equalTo(self)
+            make.height.equalTo(50)
+            make.width.equalTo(100)
+        }
+        
+        unitsView.snp.makeConstraints { (make) in
+            make.centerY.equalTo(self)
+            make.height.equalTo(100)
+            make.leading.trailing.equalTo(self).inset(20)
+        }
+        
+        conditionsView.snp.makeConstraints { (make) in
+            make.top.equalTo(unitsView.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(self).inset(20)
+        }
+        
+        locationsView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalTo(unitsView.snp.top)
+            make.leading.trailing.equalTo(self).inset(20)
         }
     }
     
@@ -86,11 +112,14 @@ private extension SettingsView {
     @objc func applyButtonPressed() {
         unitsView.saveSelection()
         conditionsView.saveSelection()
+        goToWeatherInformation?()
     }
 }
 
 extension SettingsView {
-    func configure(with cities: [String]) {
-        locationsView.configure(with: cities)
+    func configure(with model: SettingsModel) {
+        locationsView.configure(with: model.savedCities)
+        unitsView.configure(with: model.selectedUnit)
+        conditionsView.configure(with: model.selectedConditions)
     }
 }

@@ -17,6 +17,8 @@ class SettingsViewController: UIViewController {
 
     var disposeBag = Set<AnyCancellable>()
     
+    var backgroundImage: UIImage
+    
     let settingsView: SettingsView = {
         let view = SettingsView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,15 +26,19 @@ class SettingsViewController: UIViewController {
     }()
     
     //MARK: Init
-    init(viewModel: SettingsViewModel) {
+    init(viewModel: SettingsViewModel, backgroundImage: UIImage) {
         self.viewModel = viewModel
+        self.backgroundImage = backgroundImage
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    deinit {
+        print("settings VC finished")
+    }
 }
 
 //MARK: - Lifecycle
@@ -53,6 +59,7 @@ extension SettingsViewController {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
             navigationController?.navigationBar.isHidden = true
+            coordinator?.settingsDidFinish()
         }
     }
 }
@@ -66,8 +73,7 @@ private extension SettingsViewController {
     
     func setupLayout() {
         settingsView.snp.makeConstraints { (make) in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.leading.bottom.trailing.equalToSuperview().inset(10)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -80,7 +86,7 @@ private extension SettingsViewController {
     }
     
     func setupAppearance() {
-        view.backgroundColor = UIColor(named: "settingsBackgroundColor")
+        settingsView.backgroundImageView.image = backgroundImage
     }
 
 }
@@ -88,12 +94,24 @@ private extension SettingsViewController {
 //MARK: Bindings
 private extension SettingsViewController {
     func setupBindings() {
-        settingsView.locationsView.goToWeatherInformation = { [weak self] in
-            self?.coordinator?.goToWeatherInformation()
+        settingsView.goToWeatherInformation = { [weak self] in
+            self?.coordinator?.settingsDidFinish()
+        }
+        settingsView.locationsView.goToWeatherInformation = { [weak self] currentCity in
+            self?.viewModel.updateCurrentCity(with: currentCity)
+            self?.coordinator?.settingsDidFinish()
         }
         
         settingsView.locationsView.deleteCity = { [weak self] index in
             self?.processDeleteTapped(on: index)
+        }
+        
+        settingsView.unitsView.saveSelectedUnit = { [weak self] value in
+            self?.viewModel.saveSelectedUnitPublisher.send(value)
+        }
+        
+        settingsView.conditionsView.saveSelecteConditions = { [weak self] value in
+            self?.viewModel.saveSelectedConditionsPublisher.send(value)
         }
         
         let loadData = viewModel.initializeScreenData(for: viewModel.loadData)
@@ -109,7 +127,12 @@ private extension SettingsViewController {
         
         let deleteListener = viewModel.attachDeleteButtonClickListener(listener: viewModel.deleteButtonTapped)
         deleteListener.store(in: &disposeBag)
+        
+        let saveSelectedUnit = viewModel.saveSelectedUnit(subject: viewModel.saveSelectedUnitPublisher)
+        saveSelectedUnit.store(in: &disposeBag)
+        
+        let saveSelectedConditions = viewModel.saveSelectedConditions(subject: viewModel.saveSelectedConditionsPublisher)
+        saveSelectedConditions.store(in: &disposeBag)
     }
-    
     
 }

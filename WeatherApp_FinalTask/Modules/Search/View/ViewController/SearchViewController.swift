@@ -8,14 +8,23 @@
 import UIKit
 import SnapKit
 import Combine
+import NotificationCenter
 
 class SearchViewController: UIViewController {
     //MARK: Properties
+    weak var coordinator: SearchCoordinator?
+    
     let textDidChangePublisher = PassthroughSubject<String, Never>()
     
     var viewModel: SearchViewModel
     
     var disposeBag = Set<AnyCancellable>()
+
+    let blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        return blurEffectView
+    }()
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -53,6 +62,9 @@ class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        print("search VC finished")
+    }
 
 }
 
@@ -60,10 +72,12 @@ class SearchViewController: UIViewController {
 extension SearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .clear
+        tableView.backgroundColor = .clear
         setupView()
         setupBindings()
         configureTableView()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,33 +85,55 @@ extension SearchViewController {
         searchBar.delegate = self
         activateSearch()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self.view.window)
+        coordinator?.searchDidFinish()
+    }
 }
 
 private extension SearchViewController {
     func setupView() {
-        let views = [searchBar, tableView, dismissButton]
+        let views = [blurEffectView, searchBar, tableView, dismissButton]
         view.addSubviews(views)
         setupLayout()
         setupButtonActions()
     }
     
     func setupLayout() {
+        blurEffectView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        
         dismissButton.snp.makeConstraints { (make) in
             make.size.equalTo(25)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
             make.trailing.equalToSuperview().inset(20)
         }
         searchBar.snp.makeConstraints { (make) in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().inset(20)
-            make.centerY.equalTo(dismissButton)
-            make.trailing.equalTo(dismissButton.snp.leading).inset(-20)
+            make.leading.bottom.trailing.equalTo(view).inset(UIEdgeInsets(top: 0, left: 10, bottom: 100, right: 10))
         }
         
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(searchBar.snp.bottom).offset(10)
-            make.leading.trailing.bottom.equalToSuperview().inset(5)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview().inset(5)
+            make.bottom.equalTo(searchBar.snp.top)
         }
+    }
+    
+    func offsetSearchBar(for amount: CGFloat) {
+        searchBar.snp.makeConstraints { (make) in
+            make.bottom.equalTo(view).inset(amount)
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+         }
+    
+        offsetSearchBar(for: keyboardSize.height)
     }
     
     func activateSearch() {
@@ -118,10 +154,13 @@ private extension SearchViewController {
         
         textDidChangePublisher
             .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-            .sink(receiveValue: { input in
-                self.viewModel.loadData.send(input)
+            .sink(receiveValue: { [weak self] input in
+                self?.viewModel.loadData.send(input)
             })
             .store(in: &disposeBag)
+        
+        let selectedCityUpdater = viewModel.attachSelectedCityUpdater(subject: viewModel.updateSelectedCityPublisher)
+        selectedCityUpdater.store(in: &disposeBag)
     }
     
     func configureTableView() {
@@ -145,7 +184,6 @@ extension SearchViewController: UISearchBarDelegate, UISearchDisplayDelegate {
         guard let input = searchBar.text else {
             return
         }
-        searchBar.endEditing(true)
         viewModel.loadData.send(input)
     }
     
@@ -168,16 +206,18 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell()
         
         cell.textLabel?.text = cityName
+        
+        cell.backgroundColor = .clear
                
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = viewModel.screenData[indexPath.row]
-        
-        Defaults.saveCity(selectedCity)
-        CoreDataManager.save(named: selectedCity)
-        
-        presentingViewController?.dismiss(animated: false, completion: nil)
+        viewModel.updateSelectedCityPublisher.send(selectedCity)
+        if let presenter = coordinator?.presenter as? CurrentWeatherViewController {
+            presenter.makeApiCall()
+        }
+        coordinator?.searchDidFinish()
     }
 }

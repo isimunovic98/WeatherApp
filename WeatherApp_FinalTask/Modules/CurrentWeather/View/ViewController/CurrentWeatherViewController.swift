@@ -8,8 +8,9 @@
 import UIKit
 import SnapKit
 import Combine
+import MapKit
 
-class CurrentWeatherViewController: UIViewController {
+class CurrentWeatherViewController: UIViewController, CLLocationManagerDelegate {
     
     //MARK: Properties
     weak var coordinator: CurrentWeatherCoordinator?
@@ -18,38 +19,12 @@ class CurrentWeatherViewController: UIViewController {
     
     private var viewModel: CurrentWeatherViewModel
     
-    let backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+    let manager = CLLocationManager()
     
     let currentWeatherView: CurrentWeatherView = {
         let view = CurrentWeatherView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
-    
-    let settingsButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .medium)
-        button.setImage(UIImage(systemName: "gearshape", withConfiguration: largeConfig), for: .normal)
-        button.tintColor = .gray
-        return button
-    }()
-    
-    let searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.placeholder = "search"
-        searchBar.isTranslucent = true
-        searchBar.barTintColor = UIColor.clear
-        searchBar.backgroundColor = UIColor.clear
-        searchBar.backgroundImage = UIImage()
-        searchBar.searchTextField.backgroundColor = .gray
-        return searchBar
     }()
     
     //MARK: Init
@@ -67,7 +42,8 @@ class CurrentWeatherViewController: UIViewController {
 extension CurrentWeatherViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.delegate = self
+        currentWeatherView.searchBar.delegate = self
+        configureLocationManager()
         setupView()
         setupBindings()
         setupButtonActions()
@@ -79,46 +55,30 @@ extension CurrentWeatherViewController {
     }
 }
 
+extension CurrentWeatherViewController {
+    func makeApiCall() {
+        viewModel.loadData.send(false)
+    }
+}
+
 //MARK: - UI Setup
 private extension CurrentWeatherViewController {
     func setupView() {
-        let views = [backgroundImageView, settingsButton, currentWeatherView, searchBar]
-        view.addSubviews(views)
-        setupAppearance()
+        view.addSubview(currentWeatherView)
         setupLayout()
      }
-
-     func setupAppearance() {
-        backgroundImageView.image = UIImage(named: "body_image-clear-day.png")
-     }
+    
+    func configureLocationManager() {
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.startUpdatingLocation()
+    }
 
      func setupLayout() {
-        backgroundImageView.snp.makeConstraints { (make) in
-            make.edges.equalTo(view)
-        }
-        
-        settingsButton.snp.makeConstraints { (make) in
-            make.size.equalTo(35)
-            make.leading.equalTo(view).inset(10)
-            make.top.equalTo(view.safeAreaLayoutGuide)        }
-        
-        searchBar.snp.makeConstraints { (make) in
-            make.centerY.equalTo(settingsButton)
-            make.leading.equalTo(settingsButton.snp.trailing).offset(10)
-            make.trailing.equalTo(view).inset(10)
-        }
-        
         currentWeatherView.snp.makeConstraints { (make) in
-            make.top.equalTo(searchBar.snp.bottom)
-            make.leading.bottom.trailing.equalTo(view)
+            make.edges.equalToSuperview()
         }
-
-    }
-    
-    func reloadView() {
-        guard let screenData = viewModel.screenData else { return }
-        currentWeatherView.configure(with: screenData)
-        configureBackgroundImage(for: screenData.weatherId,and: screenData.icon)
     }
     
     func showBlurView( _ shouldShowLoader: Bool) {
@@ -129,18 +89,25 @@ private extension CurrentWeatherViewController {
         }
     }
     
+    func reloadView() {
+        guard let screenData = viewModel.screenData else { return }
+        currentWeatherView.configure(with: screenData)
+        configureBackgroundImage(for: screenData.weatherId, and: screenData.dayNightIndicator)
+    }
+    
     func configureBackgroundImage(for id: Int, and dayNightIndicator: String) {
         let backgroundImage = BackgroundImageManager.getBackgroundImage(for: id, and: dayNightIndicator)
-        backgroundImageView.image = backgroundImage
+        currentWeatherView.backgroundImageView.image = backgroundImage
     }
     
     //MARK: Actions
     func setupButtonActions() {
-        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
+        currentWeatherView.settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
     }
-    
+
     @objc func settingsButtonPressed() {
-        coordinator?.goToSettings()
+        let backgroundImage = view.takeScreenshot()
+        coordinator?.goToSettings(with: backgroundImage)
     }
 }
 
@@ -149,6 +116,9 @@ extension CurrentWeatherViewController {
     func setupBindings() {
         let dataLoader = viewModel.initializeScreenData(for: viewModel.loadData)
         dataLoader.store(in: &disposeBag)
+        
+        let locationListener = viewModel.attachLocationListener(subject: viewModel.useLocationPublisher)
+        locationListener.store(in: &disposeBag)
         
         viewModel.screenDataReadyPublisher
             .subscribe(on: DispatchQueue.global(qos: .background))
@@ -182,5 +152,18 @@ extension CurrentWeatherViewController {
 extension CurrentWeatherViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         coordinator?.presentSearchScreen(on: self)
+    }
+}
+
+//MARK: - Location Manager Delegate
+extension CurrentWeatherViewController {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            manager.stopUpdatingLocation()
+            let coordinates = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            viewModel.useLocationPublisher.send(coordinates)
+        }
+
+        
     }
 }

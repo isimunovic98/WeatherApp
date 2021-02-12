@@ -11,13 +11,14 @@ import DLRadioButton
 
 class UnitsSelectionView: UIView {
     //MARK: Properties
-    var cities: [String] = []
+    var saveSelectedUnit: ((Units) -> Void)?
     
     let sectionNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Units"
         label.font = label.font.withSize(25)
+        label.textColor = .white
         label.textAlignment = .center
         return label
     }()
@@ -27,7 +28,7 @@ class UnitsSelectionView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Metric", for: [])
         button.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        button.setTitleColor(.black, for: [])
+        button.setTitleColor(.white, for: [])
         button.iconColor = .white
         button.indicatorColor = .white
         return button
@@ -38,7 +39,7 @@ class UnitsSelectionView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Imperial", for: [])
         button.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
-        button.setTitleColor(.black, for: [])
+        button.setTitleColor(.white, for: [])
         button.iconColor = .white
         button.indicatorColor = .white
         return button
@@ -62,7 +63,7 @@ private extension UnitsSelectionView {
         let views = [sectionNameLabel, metricSelectionButton, imperialSelectionButton]
         addSubviews(views)
         setupLayout()
-        setupButtonActions()
+        setupButtons()
     }
     
     func setupLayout() {
@@ -81,25 +82,24 @@ private extension UnitsSelectionView {
         }
     }
     
-    func setupButtonActions() {
+    func setupButtons() {
         metricSelectionButton.otherButtons = [imperialSelectionButton]
-        let selectedUnit = Defaults.getSelectedUnits()
-        switch selectedUnit {
-        case Units.imperial.rawValue:
-            imperialSelectionButton.isSelected = true
-        default:
-            metricSelectionButton.isSelected = true
-        }
     }
 }
 
 extension UnitsSelectionView {
+    func configure(with unit: String) {
+        if unit == Units.imperial.rawValue {
+            imperialSelectionButton.isSelected = true
+        } else {
+            metricSelectionButton.isSelected = true
+        }
+    }
     func saveSelection() {
         if metricSelectionButton.isSelected {
-            Defaults.saveUnits(Units.metric.rawValue)
+            saveSelectedUnit?(Units.metric)
         } else {
-            Defaults.saveUnits(Units.imperial.rawValue)
-            print(Defaults.getSelectedUnits())
+            saveSelectedUnit?(Units.imperial)
         }
     }
 }

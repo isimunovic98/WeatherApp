@@ -8,4 +8,13 @@ target 'WeatherApp_FinalTask' do
   pod 'Alamofire', '~> 5.2'
   
   pod 'DLRadioButton', '~> 1.4'
+
+end
+
+target 'WeatherApp_FinalTaskTests' do
+
+	use_frameworks!
+	pod 'Cuckoo'
+	pod'Quick'
+	pod 'Nimble'
 end

@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct WeatherInformation {
+struct WeatherInformation: Codable {
     var cityName: String
     var weatherId: Int
-    var icon: String
+    var dayNightIndicator: String
     var weatherDescription: String
     var currentTemperature: String
     var tempMin: String
@@ -18,10 +18,14 @@ struct WeatherInformation {
     var pressure: String
     var humidity: String
     var windSpeed: String
+    var selectedUnits: String
+    var pressureIsHidden: Bool
+    var windSpeedIsHidden: Bool
+    var humidityIsHidden: Bool
     
-    init(weatherModel: CurrentWeather) {
+    init(weatherModel: CurrentWeather, selectedUnits: String, pressureIsShown: Bool, windSpeedeIsShown: Bool, humidityeIsShown: Bool) {
         self.cityName = Defaults.getSelectedCity()
-        self.icon = weatherModel.description[0].icon
+        self.dayNightIndicator = weatherModel.description[0].icon
         self.weatherId = weatherModel.description[0].id
         self.weatherDescription = weatherModel.description[0].description
         self.currentTemperature = String(format: "%.1f", weatherModel.temperature.currentTemperature)
@@ -30,5 +34,9 @@ struct WeatherInformation {
         self.pressure = String(weatherModel.temperature.pressure)
         self.humidity = String(weatherModel.temperature.humidity)
         self.windSpeed = String(weatherModel.wind.speed)
+        self.selectedUnits = selectedUnits
+        self.pressureIsHidden = pressureIsShown
+        self.windSpeedIsHidden = windSpeedeIsShown
+        self.humidityIsHidden = humidityeIsShown
     }
 }

@@ -21,16 +21,9 @@ class WeatherConditionView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
+        label.textColor = .white
+        label.font = label.font.withSize(15)
         return label
-    }()
-
-    let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 5
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        return stackView
     }()
     
     //MARK: Init
@@ -48,18 +41,21 @@ class WeatherConditionView: UIView {
 // - MARK: UI Setup
 private extension WeatherConditionView {
     func setupView() {
-        addSubview(stackView)
         let views = [conditionImageView, conditionValueLabel]
-        stackView.addArrangedSubviews(views)
+        self.addSubviews(views)
         setupLayout()
 
     }
     
     func setupLayout() {
-        stackView.snp.makeConstraints { (make) in
-            make.edges.equalTo(self).inset(10)
-            make.width.equalTo(75)
-            make.height.equalTo(100)
+        conditionImageView.snp.makeConstraints { (make) in
+            make.top.bottom.centerX.equalTo(self)
+            make.size.equalTo(50)
+        }
+        
+        conditionValueLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(conditionImageView.snp.bottom).offset(5)
+            make.centerX.leading.trailing.equalTo(self)
         }
     }
 }

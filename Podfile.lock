@@ -1,24 +1,38 @@
 PODS:
   - Alamofire (5.4.0)
+  - Cuckoo (1.4.1):
+    - Cuckoo/Swift (= 1.4.1)
+  - Cuckoo/Swift (1.4.1)
   - DLRadioButton (1.4.12)
+  - Nimble (9.0.0)
+  - Quick (3.1.2)
   - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Alamofire (~> 5.2)
+  - Cuckoo
   - DLRadioButton (~> 1.4)
+  - Nimble
+  - Quick
   - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - Cuckoo
     - DLRadioButton
+    - Nimble
+    - Quick
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
+  Cuckoo: 4625f7f54d9bb880123270e8969898d6c1d036b5
   DLRadioButton: d7c4e225ed0e8013cef7be61455230c7557ad7c1
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
+  Quick: 60f0ea3b8e0cfc0df3259a5c06a238ad8b3c46e0
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: cd173e84b9c4989d17c899f58f1fc713a938a7e3
+PODFILE CHECKSUM: bab2c4f656c2e1bde5503bc679cbcfa05e2007c8
 
 COCOAPODS: 1.10.1

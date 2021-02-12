@@ -34,7 +34,7 @@ class WeatherConditionsStackView: UIView {
     let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 15
+        stackView.spacing = 35
         stackView.axis = .horizontal
         stackView.alignment = .center
         return stackView
@@ -64,7 +64,19 @@ private extension WeatherConditionsStackView {
     
     func setupLayout() {
         stackView.snp.makeConstraints { (make) in
-            make.edges.equalTo(self).inset(10)
+            make.edges.equalTo(self)
         }
+    }
+}
+
+extension WeatherConditionsStackView {
+    func configure(with weatherInformation: WeatherInformation) {
+        var windSpeedDisplay = Constants.windSpeedMetricDisplay(of: weatherInformation.windSpeed)
+        if weatherInformation.selectedUnits == Units.imperial.rawValue {
+            windSpeedDisplay = Constants.windSpeedImperialDisplay(of: weatherInformation.windSpeed)
+        }
+        humidityConditionView.conditionValueLabel.text = Constants.humidityDisplay(of: weatherInformation.humidity)
+        pressureConditionView.conditionValueLabel.text = Constants.pressureDisplay(of: weatherInformation.pressure)
+        windSpeedConditionView.conditionValueLabel.text = windSpeedDisplay
     }
 }

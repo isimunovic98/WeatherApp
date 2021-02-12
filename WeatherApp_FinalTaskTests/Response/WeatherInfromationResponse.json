@@ -1,0 +1,49 @@
+//
+//  WeatherInfromationResponse.swift
+//  WeatherApp_FinalTaskTests
+//
+//  Created by Ivan Simunovic on 12.02.2021..
+//
+{
+   "coord":{
+      "lon":16.3721,
+      "lat":48.2085
+   },
+   "weather":[
+      {
+         "id":802,
+         "main":"Clouds",
+         "description":"scattered clouds",
+         "icon":"03d"
+      }
+   ],
+   "base":"stations",
+   "main":{
+      "temp":-3.6,
+      "feels_like":-9.95,
+      "temp_min":-5,
+      "temp_max":-2.22,
+      "pressure":1031,
+      "humidity":58
+   },
+   "visibility":10000,
+   "wind":{
+      "speed":4.63,
+      "deg":350
+   },
+   "clouds":{
+      "all":40
+   },
+   "dt":1613128202,
+   "sys":{
+      "type":1,
+      "id":6878,
+      "country":"AT",
+      "sunrise":1613109991,
+      "sunset":1613146269
+   },
+   "timezone":3600,
+   "id":2761369,
+   "name":"Vienna",
+   "cod":200
+}

@@ -11,6 +11,34 @@ import SnapKit
 class CurrentWeatherView: UIView {
     
     //MARK: Properties
+    let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let settingsButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .medium)
+        button.setImage(UIImage(systemName: "gearshape", withConfiguration: largeConfig), for: .normal)
+        button.tintColor = .white
+        return button
+    }()
+    
+    let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.placeholder = "search"
+        searchBar.isTranslucent = true
+        searchBar.barTintColor = UIColor.clear
+        searchBar.backgroundColor = UIColor.clear
+        searchBar.backgroundImage = UIImage()
+        searchBar.searchTextField.backgroundColor = .white
+        return searchBar
+    }()
+    
     let currentTemperatureView: TemperatureView =  {
         let view = TemperatureView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +50,8 @@ class CurrentWeatherView: UIView {
     let weatherDescriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = label.font.withSize(15)
+        label.font = label.font.withSize(20)
+        label.textColor = .white
         return label
     }()
     
@@ -30,6 +59,7 @@ class CurrentWeatherView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = label.font.withSize(25)
+        label.textColor = .white
         return label
     }()
     
@@ -37,7 +67,7 @@ class CurrentWeatherView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.borderWidth = 2.0
-        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderColor = UIColor.white.cgColor
         return view
     }()
     
@@ -77,99 +107,117 @@ class CurrentWeatherView: UIView {
 //MARK: - UI Setup
 private extension CurrentWeatherView {
     func setupView() {
-        let views = [currentTemperatureView,
+        let views = [backgroundImageView,
+                     currentTemperatureView,
                      weatherDescriptionLabel,
                      cityNameLabel,
                      dividorLineView,
                      dailyLowTemperatureView,
                      dailyHighTemperatureView,
-                     conditionsStackView]
+                     conditionsStackView,
+                     settingsButton,
+                     searchBar]
         
         addSubviews(views)
         setupLayout()
     }
     
     func setupLayout() {
+        backgroundImageView.snp.makeConstraints{ (make) in
+            make.edges.equalTo(self)
+        }
+        
+        cityNameLabel.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalTo(self)
+        }
+        
+        settingsButton.snp.makeConstraints { (make) in
+            make.leading.bottom.equalTo(self).inset(30)
+            make.size.equalTo(40)
+        }
+        
+        searchBar.snp.makeConstraints { (make) in
+            make.top.bottom.equalTo(settingsButton)
+            make.leading.equalTo(settingsButton.snp.trailing)
+            make.trailing.equalTo(self).inset(10)
+        }
+        
+        dividorLineView.snp.makeConstraints { (make) in
+            make.top.equalTo(cityNameLabel.snp.bottom).offset(20)
+            make.bottom.equalTo(conditionsStackView.snp.top)
+            make.width.equalTo(2)
+            make.centerX.equalTo(self)
+        }
+
+        dailyLowTemperatureView.snp.makeConstraints { (make) in
+            make.height.equalTo(dividorLineView)
+            make.leading.equalTo(self).inset(15)
+            make.centerY.equalTo(dividorLineView)
+            make.trailing.equalTo(dividorLineView.snp.leading)
+        }
+
+        dailyHighTemperatureView.snp.makeConstraints { (make) in
+            make.height.equalTo(dividorLineView)
+            make.trailing.equalTo(self).inset(15)
+            make.centerY.equalTo(dividorLineView)
+            make.leading.equalTo(dividorLineView.snp.trailing)
+        }
+        
         currentTemperatureView.snp.makeConstraints { (make) in
-            make.top.equalTo(self).offset(50)
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(50)
             make.centerX.equalTo(self)
             make.height.equalTo(150)
             make.width.equalTo(300)
         }
         
         weatherDescriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(currentTemperatureView.snp.bottom)
-            make.centerX.equalTo(self)
-            
-        }
-        
-        cityNameLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(weatherDescriptionLabel.snp.bottom).offset(50)
+            make.top.equalTo(currentTemperatureView.snp.bottom).offset(15)
             make.centerX.equalTo(self)
         }
-        
-        dividorLineView.snp.makeConstraints { (make) in
-            make.top.equalTo(cityNameLabel.snp.bottom).offset(20)
-            make.height.equalTo(100)
-            make.width.equalTo(2)
-            make.centerX.equalTo(self)
-        }
-        
-        dailyLowTemperatureView.snp.makeConstraints { (make) in
-            make.height.equalTo(130)
-            make.leading.equalTo(self).inset(15)
-            make.centerY.equalTo(dividorLineView)
-            make.trailing.equalTo(dividorLineView.snp.leading)
-        }
-        
-        dailyHighTemperatureView.snp.makeConstraints { (make) in
-            make.height.equalTo(130)
-            make.trailing.equalTo(self).inset(15)
-            make.centerY.equalTo(dividorLineView)
-            make.leading.equalTo(dividorLineView.snp.trailing)
-        }
-        
+
         conditionsStackView.snp.makeConstraints { (make) in
-            make.top.equalTo(dividorLineView.snp.bottom).offset(20)
+            make.bottom.equalTo(searchBar.snp.top).offset(-50)
             make.centerX.equalTo(self)
-            make.height.equalTo(150)
         }
     }
 }
 
 extension CurrentWeatherView {
     public func configure(with weather: WeatherInformation) {
-        setupTemperatureUnits()
-        setupConditions()
-        currentTemperatureView.temperatureLabel.text = weather.currentTemperature
-        weatherDescriptionLabel.text = weather.weatherDescription
+        currentTemperatureView.configure(temperature: weather.currentTemperature)
+        
         cityNameLabel.text = weather.cityName.uppercased()
-        dailyLowTemperatureView.temperatureLabel.text = weather.tempMin
-        dailyHighTemperatureView.temperatureLabel.text = weather.tempMax
-        conditionsStackView.humidityConditionView.conditionValueLabel.text = weather.humidity
-        conditionsStackView.pressureConditionView.conditionValueLabel.text = weather.pressure
-        conditionsStackView.windSpeedConditionView.conditionValueLabel.text = weather.windSpeed
+        
+        weatherDescriptionLabel.text = weather.weatherDescription
+
+        dailyLowTemperatureView.configure(temperature: weather.tempMin)
+        dailyHighTemperatureView.configure(temperature: weather.tempMax)
+        
+        conditionsStackView.configure(with: weather)
+
+        
+        setTemperatureUnits(from: weather.selectedUnits)
+        setupConditions(from: weather)
         
     }
     
-    private func setupTemperatureUnits() {
-        let selectedUnits = Defaults.getSelectedUnits()
-        
+    private func setTemperatureUnits(from selectedUnits: String) {
+        var unitIndicator: String
         switch selectedUnits {
         case Units.imperial.rawValue:
-            currentTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
-            dailyLowTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
-            dailyHighTemperatureView.temperatureUnitLabel.text = TemperatureUnit.imperial.rawValue
+            unitIndicator = TemperatureUnit.imperial.rawValue
         default:
-            currentTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
-            dailyLowTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
-            dailyHighTemperatureView.temperatureUnitLabel.text = TemperatureUnit.metric.rawValue
+            unitIndicator = TemperatureUnit.metric.rawValue
         }
+        
+        currentTemperatureView.temperatureUnitLabel.text = unitIndicator
+        dailyLowTemperatureView.temperatureUnitLabel.text = unitIndicator
+        dailyHighTemperatureView.temperatureUnitLabel.text = unitIndicator
     }
     
-    private func setupConditions() {
-        conditionsStackView.pressureConditionView.isHidden = Defaults.pressureIsHidden()
-        conditionsStackView.windSpeedConditionView.isHidden = Defaults.windSpeedIsHidden()
-        conditionsStackView.humidityConditionView.isHidden = Defaults.humidityIsHidden()
+    private func setupConditions(from weatherInformation: WeatherInformation) {
+        conditionsStackView.pressureConditionView.isHidden = weatherInformation.pressureIsHidden
+        conditionsStackView.windSpeedConditionView.isHidden = weatherInformation.windSpeedIsHidden
+        conditionsStackView.humidityConditionView.isHidden = weatherInformation.humidityIsHidden
     }
 }

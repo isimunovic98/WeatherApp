@@ -19,20 +19,20 @@ class TemperatureView: UIView {
     let temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "15"
         label.textAlignment = .right
         label.numberOfLines = 1
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.adjustsFontForContentSizeCategory = true
+        label.textColor = .white
         return label
     }()
     
     let temperatureUnitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = TemperatureUnit.metric.rawValue
         label.textAlignment = .left
         label.numberOfLines = 1
+        label.textColor = .white
         return label
     }()
     
@@ -71,5 +71,11 @@ private extension TemperatureView {
         stackView.snp.makeConstraints { (make) in
             make.edges.equalTo(self).inset(10)
         }
+    }
+}
+
+extension TemperatureView {
+    func configure(temperature: String) {
+        temperatureLabel.text = temperature
     }
 }

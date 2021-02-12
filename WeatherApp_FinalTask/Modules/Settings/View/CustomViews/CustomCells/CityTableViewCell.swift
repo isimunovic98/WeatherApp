@@ -22,6 +22,7 @@ class CityTableViewCell: UITableViewCell {
     
     let cityNameLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -40,7 +41,7 @@ class CityTableViewCell: UITableViewCell {
 //MARK: - UI
 private extension CityTableViewCell {
     func setupUI() {
-        backgroundColor = UIColor(named: "settingsBackgroundColor")
+        backgroundColor = .clear
         contentView.addSubviews([deleteButton, cityNameLabel])
         setupLayout()
         setupButtonActions()

@@ -22,25 +22,35 @@ class CoreDataManager {
     }()
     
     //CREATE
-    static func save(from cityInformation: CityInformation) {
-        let newEntity = CityEntity(context: context)
-        newEntity.name = cityInformation.name
-        do {
-            try self.context.save()
-        }
-        catch {
-            fatalError("Error saving movie")
-        }
-    }
     
     static func save(named name: String) {
-        let newEntity = CityEntity(context: context)
-        newEntity.name = name
-        do {
-            try self.context.save()
+        var cityEntities: [CityEntity]
+        let fetchRequest = CityEntity.fetchRequest() as NSFetchRequest<CityEntity>
+        let predicate = NSPredicate(format: "name = name", true)
+        
+        fetchRequest.predicate = predicate
+        
+        do{
+            cityEntities = try context.fetch(fetchRequest)
+            let cities = cityEntities.map({
+                return $0.name
+            })
+            if cities.contains(name) {
+                return
+            } else {
+                let newEntity = CityEntity(context: context)
+                newEntity.name = name
+                do {
+                    try self.context.save()
+                }
+                catch {
+                    fatalError("Error saving city")
+                }
+            }
+            
         }
         catch {
-            fatalError("Error saving movie")
+            fatalError("Error searching db")
         }
     }
     

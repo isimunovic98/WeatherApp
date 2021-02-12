@@ -31,13 +31,6 @@ class AppCoordinator: Coordinator {
         child.start()
     }
     
-    func goToSettings() {
-        let child = SettingsCoordinator(navigationController: navigationController)
-        child.parent = self
-        childCoordinators.append(child)
-        child.start()
-    }
-    
     func goToWeatherInformation() {
         navigationController.popViewController(animated: true)
     }
@@ -49,7 +42,6 @@ private extension AppCoordinator {
         navigationController.navigationBar.isTranslucent = true
         navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController.navigationBar.shadowImage = UIImage()
-        
         UIBarButtonItem.appearance().tintColor = .black
     }
 }
